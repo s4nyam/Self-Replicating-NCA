@@ -21,7 +21,7 @@
 # Commands to run your GPU job
 #./your_gpu_program                    # Replace with the command to execute your GPU program
 source /cluster/datastore/sanyamj/new_env/bin/activate
-srun python run.py
+srun python nca.py
 
 ## squeue
 ## scancel <process number>
