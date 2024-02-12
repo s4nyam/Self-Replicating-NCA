@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH -A master           # Replace with the desired account name
+#SBATCH -p normal        # Replace with the desired partition name
+#SBATCH --output=interestingoutput.out
+#SBATCH --gres=gpu:1                  # Request 1 GPU
+#SBATCH --nodelist=hpc6     # Replace with the desired node name
+
+ 
+
+# Additional SLURM options and job configuration
+#SBATCH -t 10-00:00:0                     # Set a time limit for the job (e.g., 10 minutes)
+##SBATCH --mem-per-cpu=4G              # Request memory per CPU (e.g., 4GB)
+
+ 
+
+# Load any necessary modules or activate a virtual environment
+## module load cuda                      # Example: Load CUDA module
+
+ 
+
+# Commands to run your GPU job
+#./your_gpu_program                    # Replace with the command to execute your GPU program
+source /cluster/datastore/sanyamj/new_env/bin/activate
+srun python run.py
+
+## squeue
+## scancel <process number>
+
+
