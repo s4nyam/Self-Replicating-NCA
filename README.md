@@ -64,7 +64,7 @@ Please refer to report document for further conceptual and implementation detail
 * [SageMaker instance](#sagemaker-instance)
 * [Cite this](#cite-this)
 * [Sample 900 steps](#sample-900-steps)
-
+* [Working pipeline](#working-pipeline)
 
 ## Open in Colab
 <a target="_blank" href="https://colab.research.google.com/drive/1HYKttER_0I6HD1y1oDdg_MLG0D21vMxB?usp=sharing">
@@ -245,4 +245,8 @@ To cite this repository:
 
 https://github.com/s4nyam/MasterThesis/assets/13884479/57d5e84b-9381-445e-b9d3-342f065d89b7
 
+
+## Working pipeline
+
+![IMG_2405](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/00ff2275-04b9-486c-a97a-686e249748d8)
 
