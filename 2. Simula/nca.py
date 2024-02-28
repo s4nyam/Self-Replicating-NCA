@@ -233,7 +233,7 @@ for i in range(WIDTH):
 
 
 
-def update_ca(ca_grid, ca_nn):
+def update_ca(ca_grid, ca_nn_list):
     print("")
     print("")
 
@@ -242,7 +242,7 @@ def update_ca(ca_grid, ca_nn):
     print("New CA grid initialised temporarily:")
     print(new_ca_grid)
 
-    def process_neighborhood(i, j, idx):
+    def process_neighborhood(i, j, idx, ca_nn_list):
         print("")
         print("")
         print("Inside process_neighborhood function")
@@ -285,6 +285,10 @@ def update_ca(ca_grid, ca_nn):
             if high_alpha_pixels:
                 # check again for livelihood of the pixels (if this if condition passed, that means there is at least one element that is greater than alpha.)
                 current_alpha_value = ca_grid[0, i, j]
+                print("current_alpha_value: ",current_alpha_value.item())
+                print("current_alpha_value: ",current_alpha_value.item())
+                print("current_alpha_value: ",current_alpha_value.item())
+                print("current_alpha_value: ",current_alpha_value.item())
                 high_alpha_values = [ca_grid[0, (i + dx) % WIDTH, (j + dy) % HEIGHT] for dx, dy in high_alpha_pixels]
                 print(">>>> Hello! I am pixel at position {}, {}. My alive neighbors are at the positions {} whose values in Alpha channel are {}.".format(i, j, high_alpha_pixels, high_alpha_values))
                 selected_pixel = random.choice(high_alpha_pixels)  # Select any random live pixel in the neighborhood
@@ -294,22 +298,30 @@ def update_ca(ca_grid, ca_nn):
                 # Check if the selected neural network has any non-zero weights
                 selected_nn_idx = ni * WIDTH + nj
                 selected_nn = ca_nn_list[selected_nn_idx]
-                has_nonzero_weights = any(torch.any(param != 0) for param in selected_nn.parameters())
+                has_nonzero_weights_selected = any(torch.any(param != 0) for param in selected_nn.parameters())
 
-                if not has_nonzero_weights:
+                current_nn_idx = idx
+                current_nn = ca_nn_list[current_nn_idx]
+                has_nonzero_weights_current = any(torch.any(param != 0) for param in current_nn.parameters())
+
+                if not has_nonzero_weights_current:
                     # Copy the neural network from the selected neighboring pixel
                     ca_nn_list[idx] = copy.deepcopy(selected_nn)
-
+                    print("AM I EVEN ENTERING HERE")
+                    print("AM I EVEN ENTERING HERE")
+                    print("AM I EVEN ENTERING HERE")
+                    print("AM I EVEN ENTERING HERE")
                     # Perturb neural network weights
                     for name, param in ca_nn_list[idx].named_parameters():
                         if 'weight' in name:
-                            if random.random() < parameter_perturbation_probability:
-                                # param.data += torch.randn_like(param.data) * random.uniform(-1, 1)
-                                param.data = torch.tensor(random.random(), dtype=param.data.dtype)
+                            mask = torch.rand_like(param.data) < parameter_perturbation_probability
+                            with torch.no_grad():
+                                param.data += mask * torch.randn_like(param.data)
                 else:
                     ca_nn_list[idx] = copy.deepcopy(selected_nn)
         else:
           ca_nn_list[idx].apply(initialize_weights_to_zero)
+        can_nn_updated_single = copy.deepcopy(ca_nn_list[idx])
         print("Ouptut from NN is :")
         print(output)
         print("------------------------------------------------------------------")
@@ -332,20 +344,22 @@ def update_ca(ca_grid, ca_nn):
 
         if output is not None:
             # print("returning output from this function: this 1 should be same as this 2", output.squeeze().tolist())
-            return output.squeeze().tolist()
+            return output.squeeze().tolist(), can_nn_updated_single
         else:
             # Return a default value (all zeros) if output is None
-            return [0.0] * NUM_LAYERS
+            return [0.0] * NUM_LAYERS, can_nn_updated_single
 
     idx = 0  # Index for the neural networks
+    ca_nn_list_temp = []
     for i in range(WIDTH):
         for j in range(HEIGHT):
             print("------------------------------------------------------------------")
             print(">>Right now I am using pixel at WIDTH {}, HEIGHT {}".format(i,j))
-            updated_values = process_neighborhood(i, j, idx)
+            updated_values, can_nn_updated_single = process_neighborhood(i, j, idx, ca_nn_list)
             print("returning output from process_neighborhood function which is same as the ouptut of NN in high precision: ", updated_values)
             for layer in range(NUM_LAYERS):
                 new_ca_grid[layer, i, j] = updated_values[layer]
+            ca_nn_list_temp.append(can_nn_updated_single)
             idx += 1
 
     print("⏩⏩⏩Final updated grid :")
@@ -371,8 +385,7 @@ def update_ca(ca_grid, ca_nn):
                 new_ca_grid_temp[layer, x, y] = 0.0
 
     print(new_ca_grid_temp)
-    return new_ca_grid_temp
-
+    return new_ca_grid_temp, ca_nn_list_temp
 
 if not os.path.exists('sim_frames_png'):
     os.makedirs('sim_frames_png')
@@ -424,7 +437,7 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             norm = Normalize(vmin=min_value, vmax=max_value)
             print("------------------------------------------------------------------")
             print(">>>>>>>>Simulation # {}".format(frame))
-            ca_grid = update_ca(ca_grid, ca_nn)
+            ca_grid, ca_nn_list_updated_main = update_ca(ca_grid, ca_nn_list)
             ca_grids_for_later_analysis.append(ca_grid[0].cpu().numpy())
             precision_multiplier = 10 ** precision
             rounded_grid = (ca_grid[0] * precision_multiplier).round() / precision_multiplier # picking only ALPHA values for plot!!!!!!
@@ -439,6 +452,7 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
             writer.grab_frame()
+            ca_nn_list = copy.deepcopy(ca_nn_list_updated_main)
 plt.close()
 print("Simulation completed.")
 
