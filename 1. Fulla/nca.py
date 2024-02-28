@@ -15,14 +15,19 @@ if not os.path.exists('PD'):
 if not os.path.exists('GD'):
     os.makedirs('GD')
 
+import time
+output_stamp = int(time.time())
+if not os.path.exists('Outputs_'+str(output_stamp)):
+    os.makedirs('Outputs_'+str(output_stamp))
+
 
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 10,10
+WIDTH, HEIGHT = 3,3
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.1
+INIT_PROBABILITY = 0.2
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.6 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
@@ -30,7 +35,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 90
+NUM_STEPS = 5
 num_steps = NUM_STEPS
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -406,6 +411,7 @@ import time
 stamp = int(time.time())
 with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
     for frame in range(NUM_STEPS+1):
+        plt.suptitle(f'Generation {frame + 1}')
         # append NN weithts here
         weights_list = []
         for network in ca_nn_list:
@@ -426,6 +432,8 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
                 ax.clear()
                 ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
                 ax.set_title(f'Layer {layer + 1}')
+            # plt.title(f'Generation {frame + 1}')
+            plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
             writer.grab_frame()
@@ -448,6 +456,8 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
                 ax.clear()
                 ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
                 ax.set_title(f'Layer {layer + 1}')
+            # plt.title(f'Generation {frame + 1}')
+            plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
             writer.grab_frame()
@@ -913,7 +923,7 @@ if not os.path.exists('gd_rwsp_frames_pdf'):
 
 def save_frame(frame):
     plt.imshow(normalized_data[frame])
-    plt.title(f'Time Step {frame + 1}')
+    plt.title(f'Generation {frame + 1}')
     plt.savefig(os.path.join('gd_rwsp_frames_png', f"{frame + 1:07d}.png"), format='png', dpi=600)
     plt.savefig(os.path.join('gd_rwsp_frames_pdf', f"{frame + 1:07d}.pdf"), format='pdf', dpi=600)
     plt.clf()
@@ -1402,4 +1412,22 @@ shutil.move(source_path, destination_path)
 
 source_path = "tool3_plot1_GD.pdf"
 destination_path = 'GD'
+shutil.move(source_path, destination_path)
+
+# Outputs
+
+source_path = "GD"
+destination_path = 'Outputs_'+str(output_stamp)
+shutil.move(source_path, destination_path)
+
+source_path = "NCA"
+destination_path = 'Outputs_'+str(output_stamp)
+shutil.move(source_path, destination_path)
+
+source_path = "PD"
+destination_path = 'Outputs_'+str(output_stamp)
+shutil.move(source_path, destination_path)
+
+source_path = "interestingoutput.out"
+destination_path = 'Outputs_'+str(output_stamp)
 shutil.move(source_path, destination_path)
