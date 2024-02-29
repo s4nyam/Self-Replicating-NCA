@@ -15,6 +15,11 @@ if not os.path.exists('PD'):
 if not os.path.exists('GD'):
     os.makedirs('GD')
 
+import time
+output_stamp = int(time.time())
+if not os.path.exists('Outputs_'+str(output_stamp)):
+    os.makedirs('Outputs_'+str(output_stamp))
+
 
 
 precision = 1
@@ -22,7 +27,7 @@ torch.set_printoptions(precision=precision)
 WIDTH, HEIGHT = 10,10
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.1
+INIT_PROBABILITY = 0.15
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.6 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
@@ -30,7 +35,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 90
+NUM_STEPS = 20
 num_steps = NUM_STEPS
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -41,6 +46,7 @@ FPS = 2 # Speed of display for animation of NCA and plots
 marker_size = 2 # for plots
 everystep_weights = [] # Stores weigths of the NNs from every time step.
 KMEANS_K = 5
+enable_annotations_on_nca = True
 import torch
 import time
 import os
@@ -232,7 +238,6 @@ for i in range(WIDTH):
             ca_nn_list[i * WIDTH + j].apply(initialize_weights)
 
 
-
 def update_ca(ca_grid, ca_nn_list):
     print("")
     print("")
@@ -419,6 +424,24 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
         if(frame == 0):
             ca_grid = ca_grid
             grid_data = ca_grid[layer].cpu().numpy()
+            if(enable_annotations_on_nca):
+                cell_std = torch.std(ca_grid[0]) # Std applied on alpha channel only
+                std_deviation_list = []
+                for weights in weights_list:
+                    # Convert the nested list to a PyTorch tensor
+                    weights_tensor = torch.tensor(weights, device=DEVICE, dtype=torch.float32)
+                    # Calculate the standard deviation for each nested list
+                    std_deviation = torch.std(weights_tensor)
+                    # Append the result to the list
+                    std_deviation_list.append(std_deviation.item())
+                std_deviation_tensor = torch.tensor(std_deviation_list, device=DEVICE, dtype=torch.float32)
+                ann_std = torch.std(std_deviation_tensor)
+                pixel_count = torch.nonzero(ca_grid[0]).size(0)
+                num_all_zeros = sum(torch.all(torch.tensor(weights, device=DEVICE, dtype=torch.float32) == 0).item() for weights in weights_list)
+                ann_count = (WIDTH*HEIGHT) - num_all_zeros
+                plt.suptitle(f'Generation#{frame + 1}, AliveCells#{pixel_count}, AliveANNs#{ann_count} Cell σ {round(cell_std.item(),3)}, ANNs σ  {round(ann_std.item(),3)}')
+            else:
+                plt.suptitle(f'Generation {frame + 1}')            
             min_value = 0
             max_value = 1
             norm = Normalize(vmin=min_value, vmax=max_value)
@@ -427,6 +450,8 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
                 ax.clear()
                 ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
                 ax.set_title(f'Layer {layer + 1}')
+            # plt.title(f'Generation {frame + 1}')
+            plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
             writer.grab_frame()
@@ -444,11 +469,31 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             unique_values, value_counts = torch.unique(rounded_grid, return_counts=True)
             frequency_dict = {value.item(): count.item() for value, count in zip(unique_values, value_counts)}
             frequency_dicts.append(frequency_dict)
+            if(enable_annotations_on_nca):
+                cell_std = torch.std(ca_grid[0]) # Std applied on alpha channel only
+                std_deviation_list = []
+                for weights in weights_list:
+                    # Convert the nested list to a PyTorch tensor
+                    weights_tensor = torch.tensor(weights, device=DEVICE, dtype=torch.float32)
+                    # Calculate the standard deviation for each nested list
+                    std_deviation = torch.std(weights_tensor)
+                    # Append the result to the list
+                    std_deviation_list.append(std_deviation.item())
+                std_deviation_tensor = torch.tensor(std_deviation_list, device=DEVICE, dtype=torch.float32)
+                ann_std = torch.std(std_deviation_tensor)
+                pixel_count = torch.nonzero(ca_grid[0]).size(0)
+                num_all_zeros = sum(torch.all(torch.tensor(weights, device=DEVICE, dtype=torch.float32) == 0).item() for weights in weights_list)
+                ann_count = (WIDTH*HEIGHT) - num_all_zeros
+                plt.suptitle(f'Generation#{frame + 1}, AliveCells#{pixel_count}, AliveANNs#{ann_count} Cell σ {round(cell_std.item(),3)}, ANNs σ  {round(ann_std.item(),3)}')
+            else:
+                plt.suptitle(f'Generation {frame + 1}')    
             for layer in range(NUM_LAYERS):
                 ax = axes[layer]
                 ax.clear()
                 ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
                 ax.set_title(f'Layer {layer + 1}')
+            # plt.title(f'Generation {frame + 1}')
+            plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
             writer.grab_frame()
@@ -914,7 +959,7 @@ if not os.path.exists('gd_rwsp_frames_pdf'):
 
 def save_frame(frame):
     plt.imshow(normalized_data[frame])
-    plt.title(f'Time Step {frame + 1}')
+    plt.title(f'Generation {frame + 1}')
     plt.savefig(os.path.join('gd_rwsp_frames_png', f"{frame + 1:07d}.png"), format='png', dpi=600)
     plt.savefig(os.path.join('gd_rwsp_frames_pdf', f"{frame + 1:07d}.pdf"), format='pdf', dpi=600)
     plt.clf()
@@ -1029,11 +1074,10 @@ for i in range(length_sim):
           grid[row, col] = [r, g, b]
   frame_filename = os.path.join(output_folder2, f"{i + 1:07d}.pdf")
   plt.imshow(grid,interpolation='none')
+  plt.title(f'Generation {i + 1}')
   # plt.axis('off')
   plt.savefig(frame_filename,format='pdf',dpi=600)
   frame_filename = os.path.join(output_folder, f"{i + 1:07d}.png")
-  plt.imshow(grid,interpolation='none')
-  # plt.axis('off')
   plt.savefig(frame_filename,format='png',dpi=600)
   plt.close()
 
@@ -1151,7 +1195,8 @@ for i in range(len(list_of_weights_at_every_step)):
 
     # Create a subplot with 1 row and 2 columns
     fig, axs = plt.subplots(1, 2, figsize=(12, 5))
-
+    plt.suptitle(f'Generation {i + 1}')
+    plt.subplots_adjust(top=0.9)
     # Plot the cluster points on the left subplot
     for cluster_id in range(k):
         cluster_points = reduced_data[clusters == cluster_id]
@@ -1403,4 +1448,22 @@ shutil.move(source_path, destination_path)
 
 source_path = "tool3_plot1_GD.pdf"
 destination_path = 'GD'
+shutil.move(source_path, destination_path)
+
+# Outputs
+
+source_path = "GD"
+destination_path = 'Outputs_'+str(output_stamp)
+shutil.move(source_path, destination_path)
+
+source_path = "NCA"
+destination_path = 'Outputs_'+str(output_stamp)
+shutil.move(source_path, destination_path)
+
+source_path = "PD"
+destination_path = 'Outputs_'+str(output_stamp)
+shutil.move(source_path, destination_path)
+
+source_path = "interestingoutput.out"
+destination_path = 'Outputs_'+str(output_stamp)
 shutil.move(source_path, destination_path)
