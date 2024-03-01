@@ -439,7 +439,7 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
                 pixel_count = torch.nonzero(ca_grid[0]).size(0)
                 num_all_zeros = sum(torch.all(torch.tensor(weights, device=DEVICE, dtype=torch.float32) == 0).item() for weights in weights_list)
                 ann_count = (WIDTH*HEIGHT) - num_all_zeros
-                plt.suptitle(f'Generation#{frame + 1}, AliveCells#{pixel_count}, AliveANNs#{ann_count} Cell σ {round(cell_std.item(),3)}, ANNs σ  {round(ann_std.item(),3)}')
+                plt.suptitle(f'Generation#{frame + 1}, AliveCells#{pixel_count}, AliveANNs#{ann_count}, Cell σ {round(cell_std.item(),3)}, ANNs σ  {round(ann_std.item(),3)}')
             else:
                 plt.suptitle(f'Generation {frame + 1}')            
             min_value = 0
@@ -484,7 +484,7 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
                 pixel_count = torch.nonzero(ca_grid[0]).size(0)
                 num_all_zeros = sum(torch.all(torch.tensor(weights, device=DEVICE, dtype=torch.float32) == 0).item() for weights in weights_list)
                 ann_count = (WIDTH*HEIGHT) - num_all_zeros
-                plt.suptitle(f'Generation#{frame + 1}, AliveCells#{pixel_count}, AliveANNs#{ann_count} Cell σ {round(cell_std.item(),3)}, ANNs σ  {round(ann_std.item(),3)}')
+                plt.suptitle(f'Generation#{frame + 1}, AliveCells#{pixel_count}, AliveANNs#{ann_count}, Cell σ {round(cell_std.item(),3)}, ANNs σ  {round(ann_std.item(),3)}')
             else:
                 plt.suptitle(f'Generation {frame + 1}')    
             for layer in range(NUM_LAYERS):
