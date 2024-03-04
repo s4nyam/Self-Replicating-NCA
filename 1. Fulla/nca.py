@@ -24,7 +24,7 @@ if not os.path.exists('Outputs_'+str(output_stamp)):
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 10,10
+WIDTH, HEIGHT = 40,40
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
 INIT_PROBABILITY = 0.2
