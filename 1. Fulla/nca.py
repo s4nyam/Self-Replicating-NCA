@@ -24,10 +24,10 @@ if not os.path.exists('Outputs_'+str(output_stamp)):
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 40,40
+WIDTH, HEIGHT = 10,10
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.02
+INIT_PROBABILITY = 0.2
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.6 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
@@ -35,7 +35,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 100
+NUM_STEPS = 10
 num_steps = NUM_STEPS
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -406,6 +406,8 @@ all_colormaps = plt.colormaps()
 # colormaps = all_colormaps
 colormaps = ['magma']
 fig, axes = plt.subplots(1, NUM_LAYERS, figsize=(5 * NUM_LAYERS, 5))
+cax = fig.add_axes([0.08, 0.94, 0.08, 0.02])  # Adjust the position and size as needed
+
 plt.tight_layout()
 # plt.close(fig)
 import time
@@ -448,9 +450,14 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             for layer in range(NUM_LAYERS):
                 ax = axes[layer]
                 ax.clear()
-                ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
+                im = ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
                 ax.set_title(f'Layer {layer + 1}')
             # plt.title(f'Generation {frame + 1}')
+            colorbar = fig.colorbar(im, cax=cax, orientation='horizontal', shrink=0.7)
+            mid_value = (min_value + max_value) / 2
+            ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
+            colorbar.set_ticks(ticks)
+            colorbar.ax.tick_params(axis='x', labelsize=4)
             plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
@@ -490,9 +497,14 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             for layer in range(NUM_LAYERS):
                 ax = axes[layer]
                 ax.clear()
-                ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
+                im = ax.imshow(ca_grid[layer].cpu().numpy(), cmap=colormaps[0],interpolation='none', norm=norm)
                 ax.set_title(f'Layer {layer + 1}')
             # plt.title(f'Generation {frame + 1}')
+            colorbar = fig.colorbar(im, cax=cax, orientation='horizontal', shrink=0.7)
+            mid_value = (min_value + max_value) / 2
+            ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
+            colorbar.set_ticks(ticks)
+            colorbar.ax.tick_params(axis='x', labelsize=4)
             plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
