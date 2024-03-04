@@ -406,7 +406,12 @@ all_colormaps = plt.colormaps()
 # colormaps = all_colormaps
 colormaps = ['magma']
 fig, axes = plt.subplots(1, NUM_LAYERS, figsize=(5 * NUM_LAYERS, 5))
-cax = fig.add_axes([0.08, 0.94, 0.08, 0.02])  # Adjust the position and size as needed
+if(NUM_LAYERS==2):
+    cax = fig.add_axes([0.08, 0.94, 0.08, 0.02])  # Adjust the position and size as needed
+elif(NUM_LAYERS==3):
+    cax = fig.add_axes([0.05, 0.955, 0.08, 0.02])  # Adjust the position and size as needed
+else:
+    cax = fig.add_axes([0.02, 0.98, 0.18, 0.02])  # Adjust the position and size as needed
 
 plt.tight_layout()
 # plt.close(fig)
@@ -457,7 +462,12 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             mid_value = (min_value + max_value) / 2
             ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
             colorbar.set_ticks(ticks)
-            colorbar.ax.tick_params(axis='x', labelsize=4)
+            if(NUM_LAYERS==2):
+                colorbar.ax.tick_params(axis='x', labelsize=5)
+            elif(NUM_LAYERS==3):
+                colorbar.ax.tick_params(axis='x', labelsize=6)
+            else:
+                colorbar.ax.tick_params(axis='x', labelsize=7)
             plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
@@ -504,7 +514,12 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             mid_value = (min_value + max_value) / 2
             ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
             colorbar.set_ticks(ticks)
-            colorbar.ax.tick_params(axis='x', labelsize=4)
+            if(NUM_LAYERS==2):
+                colorbar.ax.tick_params(axis='x', labelsize=5)
+            elif(NUM_LAYERS==3):
+                colorbar.ax.tick_params(axis='x', labelsize=6)
+            else:
+                colorbar.ax.tick_params(axis='x', labelsize=7)
             plt.subplots_adjust(top=0.9)
             plt.savefig(os.path.join('sim_frames_pdf', f'{frame:07d}.pdf'),format='pdf', dpi=600)
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
