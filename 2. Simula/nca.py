@@ -27,15 +27,15 @@ torch.set_printoptions(precision=precision)
 WIDTH, HEIGHT = 40,40
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.2
+INIT_PROBABILITY = 0.07
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
-NUM_LAYERS = 2 # rest hidden and one alpha
+NUM_LAYERS = 3 # rest hidden and one alpha
 ALPHA = 0.6 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
 INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit by perturbation.
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 10
+NUM_STEPS = 90
 num_steps = NUM_STEPS
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
