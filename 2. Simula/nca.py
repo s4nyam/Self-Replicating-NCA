@@ -24,18 +24,18 @@ if not os.path.exists('Outputs_'+str(output_stamp)):
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 40,40
+WIDTH, HEIGHT = 10,10
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.07
+INIT_PROBABILITY = 0.2
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
-NUM_LAYERS = 3 # rest hidden and one alpha
+NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.6 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
 INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit by perturbation.
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 90
+NUM_STEPS = 10
 num_steps = NUM_STEPS
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -984,15 +984,26 @@ if not os.path.exists('gd_rwsp_frames_png'):
 if not os.path.exists('gd_rwsp_frames_pdf'):
     os.makedirs('gd_rwsp_frames_pdf')
 
-def save_frame(frame):
-    plt.imshow(normalized_data[frame])
+def save_frame(frame, fig):
+    im = plt.imshow(normalized_data[frame],cmap='jet')
     plt.title(f'Generation {frame + 1}')
+    cax = fig.add_axes([0.08, 0.94, 0.15, 0.02])
+    colorbar = fig.colorbar(im, cax=cax, orientation='horizontal', shrink=0.7)
+    min_value = np.min(normalized_data[frame])
+    max_value = np.max(normalized_data[frame])
+    mid_value = (min_value + max_value) / 2
+    ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
+    rounded_ticks = [round(value) for value in ticks]
+    ticks = rounded_ticks
+    colorbar.set_ticks(ticks)
+    colorbar.ax.tick_params(axis='x', labelsize=6)
     plt.savefig(os.path.join('gd_rwsp_frames_png', f"{frame + 1:07d}.png"), format='png', dpi=600)
     plt.savefig(os.path.join('gd_rwsp_frames_pdf', f"{frame + 1:07d}.pdf"), format='pdf', dpi=600)
     plt.clf()
 
 for frame in range(length):
-    save_frame(frame)
+    fig = plt.figure()
+    save_frame(frame,fig)
 
 
 
