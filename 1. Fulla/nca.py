@@ -20,27 +20,28 @@ output_stamp = int(time.time())
 if not os.path.exists('Outputs_'+str(output_stamp)):
     os.makedirs('Outputs_'+str(output_stamp))
 
-
+import sys
+sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 40,40
+WIDTH, HEIGHT = 10,10
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.2
+INIT_PROBABILITY = 0.05
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
-ALPHA = 0.6 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
+ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
 INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit by perturbation.
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 90
+NUM_STEPS = 10
 num_steps = NUM_STEPS
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {DEVICE}")
-activation = 'sigmoid' # ['relu','sigmoid','tanh','leakyrelu']
+activation = 'sigmoid' # ['sigmoid','tanh','noact']
 frequency_dicts = []
 FPS = 2 # Speed of display for animation of NCA and plots
 marker_size = 2 # for plots
@@ -101,6 +102,22 @@ elif(activation == 'tanh'):
       def forward(self, x):
           x = self.fc1(x)
           x = self.tanh(x)
+          x = self.fc2(x)
+          return x
+
+elif(activation == 'noact'):
+  class SimpleNN(nn.Module):
+      def __init__(self):
+          super(SimpleNN, self).__init__()
+          self.fc1 = nn.Linear(9 * NUM_LAYERS, NUM_LAYERS)
+          self.fc2 = nn.Linear(NUM_LAYERS, NUM_LAYERS)
+          # Initialize weights and biases to zero
+          nn.init.zeros_(self.fc1.weight)
+          nn.init.zeros_(self.fc2.weight)
+          nn.init.zeros_(self.fc1.bias)
+          nn.init.zeros_(self.fc2.bias)
+      def forward(self, x):
+          x = self.fc1(x)
           x = self.fc2(x)
           return x
 
@@ -406,19 +423,20 @@ all_colormaps = plt.colormaps()
 # colormaps = all_colormaps
 colormaps = ['magma']
 fig, axes = plt.subplots(1, NUM_LAYERS, figsize=(5 * NUM_LAYERS, 5))
-if(NUM_LAYERS==2):
-    cax = fig.add_axes([0.08, 0.94, 0.08, 0.02])  # Adjust the position and size as needed
-elif(NUM_LAYERS==3):
-    cax = fig.add_axes([0.05, 0.955, 0.08, 0.02])  # Adjust the position and size as needed
-else:
-    cax = fig.add_axes([0.02, 0.98, 0.18, 0.02])  # Adjust the position and size as needed
-
-plt.tight_layout()
 # plt.close(fig)
 import time
 stamp = int(time.time())
 with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
     for frame in range(NUM_STEPS+1):
+        fig, axes = plt.subplots(1, NUM_LAYERS, figsize=(5 * NUM_LAYERS, 5))
+        if(NUM_LAYERS==2):
+            cax = fig.add_axes([0.08, 0.94, 0.08, 0.02])  # Adjust the position and size as needed
+        elif(NUM_LAYERS==3):
+            cax = fig.add_axes([0.05, 0.955, 0.08, 0.02])  # Adjust the position and size as needed
+        else:
+            cax = fig.add_axes([0.02, 0.98, 0.18, 0.02])  # Adjust the position and size as needed
+
+        # plt.tight_layout() 
         # append NN weithts here
         weights_list = []
         for network in ca_nn_list:
@@ -525,10 +543,25 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             plt.savefig(os.path.join('sim_frames_png', f'{frame:07d}.png'),format='png', dpi=600)
             writer.grab_frame()
             ca_nn_list = copy.deepcopy(ca_nn_list_updated_main)
+        # fig.close()
+        plt.close()
+        plt.close(fig)
 plt.close()
 print("Simulation completed.")
 
+nca_video_filename = "NCA_video_{}".format(stamp)
+# Save video as well
+import subprocess
 
+# Your Python variable for FPS and bitrate
+fps = FPS  # replace with your desired value
+bitrate = 10000  # replace with your desired value
+
+# Construct the bash command with both FPS and bitrate variables
+command = f"ffmpeg -framerate {fps} -pattern_type glob -i 'sim_frames_png/*.png' -c:v libx264 -b:v {bitrate}k -pix_fmt yuv420p {nca_video_filename}.mp4"
+
+# Run the command quietly (suppress output)
+subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 # Display the combined NCA Simulation
 frames_folder = 'sim_frames_png'
@@ -1129,7 +1162,7 @@ for i in range(length_sim):
   plt.savefig(frame_filename,format='pdf',dpi=600)
   frame_filename = os.path.join(output_folder, f"{i + 1:07d}.png")
   plt.savefig(frame_filename,format='png',dpi=600)
-  plt.clf()
+  plt.close()
 
 # Display the combined clustering plot
 frames_folder = output_folder
