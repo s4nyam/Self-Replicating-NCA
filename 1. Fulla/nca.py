@@ -552,6 +552,7 @@ print("Simulation completed.")
 
 nca_video_filename = "NCA_video_{}.mp4".format(stamp)
 command = f"rm {nca_video_filename}"
+subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 nca_video_filename = "NCA_video_{}".format(stamp)
