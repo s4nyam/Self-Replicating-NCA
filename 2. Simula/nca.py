@@ -549,6 +549,11 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
 plt.close()
 print("Simulation completed.")
 
+
+nca_video_filename = "NCA_video_{}.mp4".format(stamp)
+command = f"rm {nca_video_filename}"
+
+
 nca_video_filename = "NCA_video_{}".format(stamp)
 # Save video as well
 import subprocess
