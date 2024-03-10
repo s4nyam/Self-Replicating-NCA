@@ -549,6 +549,7 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
 plt.close()
 print("Simulation completed.")
 
+import subprocess
 
 nca_video_filename = "NCA_video_{}.mp4".format(stamp)
 command = f"rm {nca_video_filename}"
@@ -557,7 +558,6 @@ subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess
 
 nca_video_filename = "NCA_video_{}".format(stamp)
 # Save video as well
-import subprocess
 
 # Your Python variable for FPS and bitrate
 fps = FPS  # replace with your desired value
