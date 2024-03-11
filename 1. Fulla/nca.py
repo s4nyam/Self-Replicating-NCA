@@ -25,7 +25,7 @@ sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 10,10
+WIDTH, HEIGHT = 20,20
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
 INIT_PROBABILITY = 0.05
@@ -36,7 +36,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 10
+NUM_STEPS = 1000
 num_steps = NUM_STEPS
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -1043,6 +1043,8 @@ def save_frame(frame, fig):
 for frame in range(length):
     fig = plt.figure()
     save_frame(frame,fig)
+    plt.close(fig)
+    plt.close()
 
 
 
