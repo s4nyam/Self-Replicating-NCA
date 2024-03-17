@@ -23,6 +23,9 @@ This repo is code supplement for MSc. thesis at <a href="https://www.hiof.no/eng
 
 This project implements the Neural CA Frameowork where self-replication with mutation is the only way for cells to live longer. We study and Analyse the growht in Phenotypic Diversity (PD) and Genetic Diversity (GD) over longer time steps. Specifically, we intend to study, formalise and propose three tools to analyse GD and four tools for PD. Specifically, GD level tools are (1) Random Weight Selection Plot (RWSP), (2) Clustering Neural Weights Approach (CNWA) and (3) Genotypic Hash Coloring (GHC). PD level tools include (1) Cellular Type Frequency Plot (CTFP), (2) Global Entropy Plot (GEP), (3) Gross Cell Variance Plot (GCVP), and (4) Cell Local Organisation Global Variance (CLOGV).
 
+
+[![NCA Video](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/f4dfb09b-014e-46a1-9490-b7b9969825f7)](https://youtu.be/tNrphmZuk0Y)
+
 Research Questions:
 1. What are the key species that emerge, survive, reproduce and becomes extinct (dead)
 in the evolved NCA model?
