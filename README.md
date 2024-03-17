@@ -32,6 +32,10 @@ This project implements the Neural CA Frameowork where self-replication with mut
 ## GEP+GCVP+CLOGV - Phenotypic Diversity
 ![GEP+GCVP+CLOGV](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/8cbd6761-de48-4d7e-bfd4-4e8dfa11ed34)
 
+
+## Quick Demo RWSP Video (Redirects YouTube)
+[![NCA Video](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/d909a461-bf3e-4f92-b8ff-e4e2956c01a7)](https://youtu.be/OseL2P-ERio)
+
 Research Questions:
 1. What are the key species that emerge, survive, reproduce and becomes extinct (dead)
 in the evolved NCA model?
