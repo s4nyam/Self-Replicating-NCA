@@ -36,6 +36,11 @@ This project implements the Neural CA Frameowork where self-replication with mut
 ## Quick Demo RWSP Video (Redirects YouTube)
 [![NCA Video](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/d909a461-bf3e-4f92-b8ff-e4e2956c01a7)](https://youtu.be/OseL2P-ERio)
 
+## Quick Demo GHC Video (Redirects YouTube)
+[![NCA Video](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/f3497c9c-385f-4cc0-8335-4d566bb1b08b)](https://youtu.be/O4aiVGomvuY)
+
+
+
 Research Questions:
 1. What are the key species that emerge, survive, reproduce and becomes extinct (dead)
 in the evolved NCA model?
