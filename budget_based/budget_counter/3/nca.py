@@ -460,6 +460,7 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     index_death_collected_budget = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
+            counter_death_budget = counter_death_budget + 1
             if (budget_counter_grid[x,y]>budget_per_cell): # check for budget limit
                 # If any value is less than ALPHA, set values in all layers at the current position to 0
                 budget_counter_grid[x,y] = 0 # <<<<<<<RESET COUNTER>>>>>>>>>>>>

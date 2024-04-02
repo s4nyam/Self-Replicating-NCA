@@ -348,10 +348,7 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
                 if not has_nonzero_weights_current:
                     # Copy the neural network from the selected neighboring pixel
                     ca_nn_list[idx] = copy.deepcopy(selected_nn)
-                    print("AM I EVEN ENTERING HERE")
-                    print("AM I EVEN ENTERING HERE")
-                    print("AM I EVEN ENTERING HERE")
-                    print("AM I EVEN ENTERING HERE")
+                    print("AM I EVEN ENTERING HERE - ppp")
                     # Perturb neural network weights
                     for name, param in ca_nn_list[idx].named_parameters():
                         if 'weight' in name:
@@ -454,12 +451,15 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
         for j in range(HEIGHT):
             if ca_grid[0, i, j] > ALPHA:
                 budget_counter_grid[i,j] = budget_counter_grid[i,j] + 1 # Budget consumed per generation
+            # else: # Newly added Line 2April
+            #     budget_counter_grid[i,j] = 0 # Newly added Line 2April
     
     # Death Routine from previosu code but with budget counter grid condition
     counter_death_budget = 0
     index_death_collected_budget = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
+            counter_death_budget = counter_death_budget + 1
             if (budget_counter_grid[x,y]>budget_per_cell): # check for budget limit
                 # If any value is less than ALPHA, set values in all layers at the current position to 0
                 budget_counter_grid[x,y] = 0 # <<<<<<<RESET COUNTER>>>>>>>>>>>>
