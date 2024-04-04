@@ -27,10 +27,10 @@ sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 100,100
+WIDTH, HEIGHT = 200,200
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.001
+INIT_PROBABILITY = 0.0002
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
@@ -38,7 +38,7 @@ INHERTIANCE_PROBABILITY  = 0.02 # probability that neighboring cells will inheri
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 100
+NUM_STEPS = 1000
 num_steps = NUM_STEPS
 at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
 probability_death = 0.004 # 40 pixels die every generation
@@ -54,7 +54,7 @@ KMEANS_K = 5
 enable_annotations_on_nca = True
 
 
-budget_per_cell = 3
+budget_per_cell = 4
 fixed_value = 0
 budget_counter_grid = np.zeros((WIDTH, HEIGHT)) + fixed_value
 
@@ -512,15 +512,16 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
 
         # plt.tight_layout() 
         # append NN weithts here
-        weights_list = []
-        for network in ca_nn_list:
-            state_dict = network.state_dict()
-            flattened_params = []
-            for param in state_dict.values():
-                flattened_params.extend(param.view(-1).tolist())
-            weights_list.append(flattened_params)
-        everystep_weights.append(weights_list)
+
         if(frame == 0):
+            weights_list = []
+            for network in ca_nn_list:
+                state_dict = network.state_dict()
+                flattened_params = []
+                for param in state_dict.values():
+                    flattened_params.extend(param.view(-1).tolist())
+                weights_list.append(flattened_params)
+            everystep_weights.append(weights_list)
             ca_grid = ca_grid
             grid_data = ca_grid[layer].cpu().numpy()
             if(enable_annotations_on_nca):
@@ -578,6 +579,14 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             unique_values, value_counts = torch.unique(rounded_grid, return_counts=True)
             frequency_dict = {value.item(): count.item() for value, count in zip(unique_values, value_counts)}
             frequency_dicts.append(frequency_dict)
+            weights_list = []
+            for network in ca_nn_list_updated_main:
+                state_dict = network.state_dict()
+                flattened_params = []
+                for param in state_dict.values():
+                    flattened_params.extend(param.view(-1).tolist())
+                weights_list.append(flattened_params)
+            everystep_weights.append(weights_list)
             if(enable_annotations_on_nca):
                 cell_std = torch.std(ca_grid[0]) # Std applied on alpha channel only
                 std_deviation_list = []
