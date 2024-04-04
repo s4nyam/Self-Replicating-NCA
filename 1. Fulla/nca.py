@@ -6,6 +6,8 @@ import torch
 from PIL import Image
 import shutil
 import os
+import numpy as np
+
 if not os.path.exists('NCA'):
     os.makedirs('NCA')
 
@@ -25,34 +27,43 @@ sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 20,20
+WIDTH, HEIGHT = 100,100
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.05
+INIT_PROBABILITY = 0.001
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
-INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit by perturbation.
+INHERTIANCE_PROBABILITY  = 0.02 # probability that neighboring cells will inherit by perturbation.
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 1000
+NUM_STEPS = 100
 num_steps = NUM_STEPS
+at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
+probability_death = 0.004 # 40 pixels die every generation
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {DEVICE}")
 activation = 'sigmoid' # ['sigmoid','tanh','noact']
 frequency_dicts = []
-FPS = 2 # Speed of display for animation of NCA and plots
+FPS = 10 # Speed of display for animation of NCA and plots
 marker_size = 2 # for plots
 everystep_weights = [] # Stores weigths of the NNs from every time step.
 KMEANS_K = 5
 enable_annotations_on_nca = True
+
+
+budget_per_cell = 3
+fixed_value = 0
+budget_counter_grid = np.zeros((WIDTH, HEIGHT)) + fixed_value
+
+
+
 import torch
 import time
 import os
 import torch.nn as nn
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FFMpegWriter
 import random
@@ -69,6 +80,10 @@ ca_grids_for_later_analysis = []
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+def tanh(x):
+    updated_value = np.tanh(x)
+    updated_value_tensor = torch.tensor(updated_value, dtype=torch.float32)
+    return updated_value_tensor
 if(activation == 'sigmoid'):
   class SimpleNN(nn.Module):
       def __init__(self):
@@ -249,13 +264,17 @@ def initialize_weights_to_zero(module):
 ca_nn_list = [SimpleNN().to(DEVICE) for _ in range(WIDTH * HEIGHT)]
 
 # Initialize the weights for neural networks associated with live pixels
+# budget_per_cell = 8
+# fixed_value = 0
+# budget_counter_grid = np.zeros((WIDTH, HEIGHT)) + fixed_value
+
+
 for i in range(WIDTH):
     for j in range(HEIGHT):
         if ca_grid[0, i, j] > ALPHA:
             ca_nn_list[i * WIDTH + j].apply(initialize_weights)
 
-
-def update_ca(ca_grid, ca_nn_list):
+def update_ca(ca_grid, ca_nn_list,frame_number):
     print("")
     print("")
 
@@ -405,6 +424,61 @@ def update_ca(ca_grid, ca_nn_list):
             # If any value is less than ALPHA, set values in all layers at the current position to 0
             for layer in range(NUM_LAYERS):
                 new_ca_grid_temp[layer, x, y] = 0.0
+    
+    
+    # Random ALPHA Death
+    counter_death = 0
+    index_death_collected = []
+    if(frame_number % at_which_step_random_death == 0): # Either you hard code the death with generation explicitly or by the "budget"
+        for x in range(WIDTH):
+            for y in range(HEIGHT):
+                # Check if any value in channel 0 is less than ALPHA at the current position
+                counter_death = counter_death + 1
+                if (random.random() < probability_death):
+                    # If any value is less than ALPHA, set values in all layers at the current position to 0
+                    for layer in range(NUM_LAYERS):
+                        new_ca_grid_temp[layer, x, y] = 0.0
+                        index_death_collected.append(counter_death)
+    # Emptying the weights of those deaths
+    if(len(index_death_collected)>0):
+        for ii in range(len(ca_nn_list_temp)):
+            if ii in index_death_collected:
+                ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
+
+    
+    
+    # Budget Counter Grid
+    # Budget Counter Grid
+    # Budget Counter Grid
+    
+    print("🎃🎃🎃🎃Budget counter grid before updating budget_counter_grid :")
+    print(budget_counter_grid)
+    for i in range(WIDTH):
+        for j in range(HEIGHT):
+            if round(new_ca_grid_temp[0, i, j].item(),precision) > ALPHA:
+                budget_counter_grid[i,j] = budget_counter_grid[i,j] + 1 # Budget consumed per generation
+            if round(new_ca_grid_temp[0, i, j].item(),precision) <= ALPHA:
+                budget_counter_grid[i,j] = 0 # Counter to 0 all rest cases
+    print("🎃🎃🎃🎃Budget counter grid after updating budget_counter_grid :")
+    print(budget_counter_grid)
+    
+    # Death Routine from previosu code but with budget counter grid condition
+    counter_death_budget = 0
+    index_death_collected_budget = []
+    for x in range(WIDTH):
+        for y in range(HEIGHT):
+            counter_death_budget = counter_death_budget + 1
+            if (budget_counter_grid[x,y]>budget_per_cell): # check for budget limit
+                # If any value is less than ALPHA, set values in all layers at the current position to 0
+                budget_counter_grid[x,y] = 0 # <<<<<<<RESET COUNTER>>>>>>>>>>>>
+                for layer in range(NUM_LAYERS):
+                    new_ca_grid_temp[layer, x, y] = 0.0
+                    index_death_collected_budget.append(counter_death_budget)
+
+    if(len(index_death_collected_budget)>0):
+        for ii in range(len(ca_nn_list_temp)):
+            if ii in index_death_collected_budget:
+                ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
 
     print(new_ca_grid_temp)
     return new_ca_grid_temp, ca_nn_list_temp
@@ -497,7 +571,7 @@ with writer.saving(fig, "NCA_video_{}.mp4".format(stamp), dpi=600):
             norm = Normalize(vmin=min_value, vmax=max_value)
             print("------------------------------------------------------------------")
             print(">>>>>>>>Simulation # {}".format(frame))
-            ca_grid, ca_nn_list_updated_main = update_ca(ca_grid, ca_nn_list)
+            ca_grid, ca_nn_list_updated_main = update_ca(ca_grid, ca_nn_list, frame)
             ca_grids_for_later_analysis.append(ca_grid[0].cpu().numpy())
             precision_multiplier = 10 ** precision
             rounded_grid = (ca_grid[0] * precision_multiplier).round() / precision_multiplier # picking only ALPHA values for plot!!!!!!
