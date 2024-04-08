@@ -8,6 +8,7 @@ import shutil
 import os
 import numpy as np
 
+
 if not os.path.exists('NCA'):
     os.makedirs('NCA')
 
@@ -38,7 +39,7 @@ INHERTIANCE_PROBABILITY  = 0.02 # probability that neighboring cells will inheri
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 1000
+NUM_STEPS = 10000
 num_steps = NUM_STEPS
 at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
 probability_death = 0.004 # 40 pixels die every generation
@@ -54,7 +55,7 @@ KMEANS_K = 5
 enable_annotations_on_nca = True
 
 
-budget_per_cell = 4
+budget_per_cell = 3
 fixed_value = 0
 budget_counter_grid = np.zeros((WIDTH, HEIGHT)) + fixed_value
 
@@ -394,10 +395,10 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     ca_nn_list_temp = []
     for i in range(WIDTH):
         for j in range(HEIGHT):
-            print("------------------------------------------------------------------")
-            print(">>Right now I am using pixel at WIDTH {}, HEIGHT {}".format(i,j))
+            # print("------------------------------------------------------------------")
+            # print(">>Right now I am using pixel at WIDTH {}, HEIGHT {}".format(i,j))
             updated_values, can_nn_updated_single = process_neighborhood(i, j, idx, ca_nn_list)
-            print("returning output from process_neighborhood function which is same as the ouptut of NN in high precision: ", updated_values)
+            # print("returning output from process_neighborhood function which is same as the ouptut of NN in high precision: ", updated_values)
             for layer in range(NUM_LAYERS):
                 new_ca_grid[layer, i, j] = updated_values[layer]
             ca_nn_list_temp.append(can_nn_updated_single)
@@ -426,41 +427,37 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
                 new_ca_grid_temp[layer, x, y] = 0.0
     
     
-    # Random ALPHA Death
-    counter_death = 0
-    index_death_collected = []
-    if(frame_number % at_which_step_random_death == 0): # Either you hard code the death with generation explicitly or by the "budget"
-        for x in range(WIDTH):
-            for y in range(HEIGHT):
-                # Check if any value in channel 0 is less than ALPHA at the current position
-                counter_death = counter_death + 1
-                if (random.random() < probability_death):
-                    # If any value is less than ALPHA, set values in all layers at the current position to 0
-                    for layer in range(NUM_LAYERS):
-                        new_ca_grid_temp[layer, x, y] = 0.0
-                        index_death_collected.append(counter_death)
-    # Emptying the weights of those deaths
-    if(len(index_death_collected)>0):
-        for ii in range(len(ca_nn_list_temp)):
-            if ii in index_death_collected:
-                ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
-
-    
     
     # Budget Counter Grid
     # Budget Counter Grid
     # Budget Counter Grid
-    
-    print("🎃🎃🎃🎃Budget counter grid before updating budget_counter_grid :")
+    print("------------------------------------BUDGET COUNTER CHECKS------------------------------------")
+    print("Budget Counter Grid - Before")
     print(budget_counter_grid)
+
+    temp_budget_counter_grid_iterator = 0
+    index_temp_budget_counter_grid_iterator = []
     for i in range(WIDTH):
         for j in range(HEIGHT):
+            temp_budget_counter_grid_iterator = temp_budget_counter_grid_iterator + 1
             if round(new_ca_grid_temp[0, i, j].item(),precision) > ALPHA:
+                print("Incrementing the counter with 1 for budget increment")
                 budget_counter_grid[i,j] = budget_counter_grid[i,j] + 1 # Budget consumed per generation
             if round(new_ca_grid_temp[0, i, j].item(),precision) <= ALPHA:
+                print("For dead cells making counter 0 to not carry the leaks (agents might have died in the update rule as well)")
                 budget_counter_grid[i,j] = 0 # Counter to 0 all rest cases
-    print("🎃🎃🎃🎃Budget counter grid after updating budget_counter_grid :")
+                # index_temp_budget_counter_grid_iterator.append(temp_budget_counter_grid_iterator)
+                # for layer in range(NUM_LAYERS):
+                #     new_ca_grid_temp[layer, x, y] = 0.0
+
+    if(len(index_temp_budget_counter_grid_iterator)>0):
+        for ii in range(len(ca_nn_list_temp)):
+            if ii in index_temp_budget_counter_grid_iterator:
+                ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
+    
+    print("Budget Counter Grid - After increment and dead cell deletion")
     print(budget_counter_grid)
+
     
     # Death Routine from previosu code but with budget counter grid condition
     counter_death_budget = 0
@@ -470,17 +467,32 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
             counter_death_budget = counter_death_budget + 1
             if (budget_counter_grid[x,y]>budget_per_cell): # check for budget limit
                 # If any value is less than ALPHA, set values in all layers at the current position to 0
+                print("Threshold reached Threshold reached Threshold reached!!!!")
                 budget_counter_grid[x,y] = 0 # <<<<<<<RESET COUNTER>>>>>>>>>>>>
+                index_death_collected_budget.append(counter_death_budget)
                 for layer in range(NUM_LAYERS):
+                    print("Resetting CHANNELS threshold reached")
                     new_ca_grid_temp[layer, x, y] = 0.0
-                    index_death_collected_budget.append(counter_death_budget)
+                    
+    print("Budget Counter Grid - After resetting in case it reaches threshold")
+    print(budget_counter_grid)
+
 
     if(len(index_death_collected_budget)>0):
         for ii in range(len(ca_nn_list_temp)):
             if ii in index_death_collected_budget:
                 ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
-
+    print("------------------------------------BUDGET COUNTER CHECKS------------------------------------")
     print(new_ca_grid_temp)
+
+    print("------------------------------------MAKE FINAL CHECK TO REPLACE ALPHA WITH 0------------------------------------")
+    for x in range(WIDTH):
+        for y in range(HEIGHT):
+            if (budget_counter_grid[x,y] == 0):
+                for layer in range(NUM_LAYERS):
+                    print("Resetting CHANNELS threshold reached")
+                    new_ca_grid_temp[layer, x, y] = 0.0
+    
     return new_ca_grid_temp, ca_nn_list_temp
 
 if not os.path.exists('sim_frames_png'):
@@ -1316,313 +1328,6 @@ destination_path = 'GD'
 shutil.move(source_path, destination_path)
 
 
-
-# CNWA Tool 3
-
-output_folder = "gd_cnwa_frames_png"
-output_folder2 = "gd_cnwa_frames_pdf"
-
-# Make sure the output folder exists
-if not os.path.exists(output_folder):
-    os.makedirs(output_folder)
-if not os.path.exists(output_folder2):
-    os.makedirs(output_folder2)
-
-import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-import os
-from PIL import Image
-
-k = KMEANS_K  # Set smaller value for smaller runs
-this_list_should_contain_NN_for_every_step = everystep_weights
-list_of_weights_at_every_step = round_elements_in_nested_list(this_list_should_contain_NN_for_every_step)
-marker_size = marker_size  # Add marker size definition
-
-# Initialize colors for clusters based on initial assignment
-initial_colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'orange', 'purple', 'brown']
-
-# Initialize centroids only once based on the first frame
-initial_frame_weights = list_of_weights_at_every_step[0]
-initial_centroids = KMeans(n_clusters=k, random_state=0, n_init=1).fit(
-    StandardScaler().fit_transform(initial_frame_weights)).cluster_centers_
-
-# Dictionary to store cluster colors based on initial assignment
-cluster_colors = {cluster_id: initial_colors[cluster_id] for cluster_id in range(k)}
-
-# Store centroid data for each step
-centroid_data = []
-cluster_data = []  # Modified: Initialize cluster_data list to store cluster counts for each step
-for i in range(len(list_of_weights_at_every_step)):
-    weight_parameters = list_of_weights_at_every_step[i]
-    normalized_data = StandardScaler().fit_transform(weight_parameters)
-
-    # Use the initial centroids for k-means clustering
-    kmeans = KMeans(n_clusters=k, random_state=0, n_init=1, init=initial_centroids)
-    kmeans.fit(normalized_data)
-    clusters = kmeans.predict(normalized_data)
-
-    pca = PCA(n_components=2)
-    reduced_data = pca.fit_transform(normalized_data)
-
-    # Create a subplot with 1 row and 2 columns
-    fig, axs = plt.subplots(1, 2, figsize=(12, 5))
-    plt.suptitle(f'Generation {i + 1}')
-    plt.subplots_adjust(top=0.9)
-    # Plot the cluster points on the left subplot
-    for cluster_id in range(k):
-        cluster_points = reduced_data[clusters == cluster_id]
-        axs[0].scatter(cluster_points[:, 0], cluster_points[:, 1], s=marker_size, label=f'Cluster {cluster_id}',
-                       c=cluster_colors[cluster_id])
-
-    # Highlight the centroids with larger markers
-    axs[0].scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=2 * marker_size, marker='X',
-                   c='black', label='Centroids')
-    axs[0].set_title(f'K-Means Clustering (k={k})')
-
-    # Plot the count of points for each cluster on the right subplot
-    cluster_counts = np.bincount(clusters, minlength=k)  # Ensure that the cluster counts have length k
-    cluster_data.append(cluster_counts)
-
-    bar_container = axs[1].bar(list(range(k)), cluster_counts, color=[cluster_colors[cluster_id] for cluster_id in range(k)])
-    axs[1].set_title('Cluster Point Counts')
-
-    # Add labels on top of each bar
-    for rect, value in zip(bar_container, cluster_counts):
-        height = rect.get_height()
-        axs[1].text(rect.get_x() + rect.get_width() / 2, height, f'{value}', ha='center', va='bottom')
-
-    # Save the combined plot
-    # frames_folder = "TOOL2_GD_FRAMES_CLUSTERING"
-    # if not os.path.exists(frames_folder):
-    #     os.makedirs(frames_folder)
-    filename = os.path.join(output_folder, '{:07d}.png'.format(i))
-    plt.savefig(filename, format='png', dpi=600)
-    filename = os.path.join(output_folder2, '{:07d}.pdf'.format(i))
-    plt.savefig(filename, format='pdf', dpi=600)
-    plt.close()
-
-    # Save centroid data for each step
-    centroid_data.append(kmeans.cluster_centers_)
-
-# Display the combined clustering plot
-frames_folder = output_folder
-frame_files = [f for f in os.listdir(frames_folder) if f.endswith(".png")]
-frame_files.sort(key=lambda x: int(x.split(".")[0]))
-frames = []
-for frame_file in frame_files:
-    frame_path = os.path.join(frames_folder, frame_file)
-    frame = Image.open(frame_path)
-    frames.append(frame)
-
-# Define GIF-related parameters
-output_gif_path = "tool3_gd_cnwa_gif.gif"
-desired_fps = FPS  # Add FPS definition
-duration = int(1000 / desired_fps)
-
-# Save frames as an animated GIF
-frames[0].save(
-    output_gif_path,
-    save_all=True,
-    append_images=frames[1:],
-    duration=duration,
-    loop=0,
-    disposal=2,
-    optimize=False
-)
-
-
-# Save video as well
-import subprocess
-
-# Your Python variable for FPS and bitrate
-fps = FPS  # replace with your desired value
-bitrate = 10000  # replace with your desired value
-
-# Construct the bash command with both FPS and bitrate variables
-command = f"ffmpeg -framerate {fps} -pattern_type glob -i 'gd_cnwa_frames_png/*.png' -c:v libx264 -b:v {bitrate}k -pix_fmt yuv420p tool3_gd_cnwa_video.mp4"
-
-# Run the command quietly (suppress output)
-subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-
-source_path = "tool3_gd_cnwa_video.mp4"
-destination_path = 'GD'
-shutil.move(source_path, destination_path)
-
-source_path = "tool3_gd_cnwa_gif.gif"
-destination_path = 'GD'
-shutil.move(source_path, destination_path)
-
-source_path = "gd_cnwa_frames_png"
-destination_path = 'GD'
-shutil.move(source_path, destination_path)
-
-source_path = "gd_cnwa_frames_pdf"
-destination_path = 'GD'
-shutil.move(source_path, destination_path)
-
-
-
-# Tool 3.1 GD Plot Kernel Density
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
-data = cluster_data
-data = np.array(data)
-# Number of species and number of steps
-n = data.shape[0] # Number of steps
-k = data.shape[1] # Number of species
-
-
-# Generate random data for k species and n steps
-data = data.flatten()
-species_labels = [f'Species {i}' for i in range(1, k + 1) for _ in range(n)]
-
-# Create a DataFrame for Seaborn
-data_df = pd.DataFrame({'Value': data, 'Species': species_labels})
-
-# Create a KDE plot using Seaborn
-sns.kdeplot(data=data_df, x='Value', hue='Species', fill=True)
-
-# Show the plot
-plt.title(f'KDE Plot for {k} Species over {n} Steps')
-plt.xlabel('Value')
-plt.ylabel('Density')
-plt.savefig("tool3_plot1_GD.pdf",format='pdf', dpi=600)
-plt.show()
-plt.close()
-
-
-# Tool 3.2 GD Plot Speciation Bar Plot
-
-# Import necessary libraries
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
-# Assuming cluster_data is a 2D array with dimensions (number_of_steps, number_of_species)
-data = np.array(cluster_data)
-
-# Calculate proportions for each step
-proportions = data / data.sum(axis=1, keepdims=True)
-
-# Create a DataFrame for Seaborn
-proportions_df = pd.DataFrame(proportions, columns=[f'Species {i}' for i in range(1, data.shape[1] + 1)])
-
-# Define colors for each species
-species_colors = ['red', 'green', 'blue', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
-
-fig, ax = plt.subplots(figsize=(12, 6))  # Adjust the figure size as needed
-
-proportions_df.plot(kind='bar', stacked=True, width=1.0, color=species_colors, ax=ax)
-
-# Modify x-axis and y-axis labels
-ax.set(xlabel='Step', ylabel='Proportion')
-
-
-def calculate_proportions(input_value, num_parts):
-    # Calculate the size of each proportion
-    proportion_size = input_value // num_parts
-
-    # Generate the list of proportions
-    proportions = [proportion_size * i for i in range(1, num_parts + 1)]
-
-    return proportions
-
-# # Example usage
-# input_value = 1000
-# num_parts = 3
-# result = calculate_proportions(input_value, num_parts)
-# print(result)
-
-
-
-# Set x-axis ticks and labels to every 5th value
-xticks_positions = calculate_proportions(NUM_STEPS,15)
-xticks_labels = [str(i) for i in xticks_positions]
-
-ax.set_xticks(xticks_positions)
-ax.set_xticklabels(xticks_labels)
-
-# Move the legend outside the plot
-ax.legend(loc='upper left', bbox_to_anchor=(1, 1))
-
-# Show the plot
-plt.title(f'Stacked Bar Plot for Proportions of Species over Steps')
-plt.tight_layout()  # Adjust layout to prevent clipping
-plt.savefig("tool3_plot2_GD.pdf", format='pdf', bbox_inches='tight', dpi=600)  # Use bbox_inches to include the legend properly
-
-plt.show()
-plt.close()
-
-
-
-# Tool 3.3 GD Plot Speciation Bar Plot
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
-# Assuming cluster_data is a 2D array with dimensions (number_of_steps, number_of_species)
-data = np.array(cluster_data)
-
-# Calculate proportions for each step
-proportions = data / data.sum(axis=1, keepdims=True)
-
-# Create a DataFrame for Seaborn
-proportions_df = pd.DataFrame(proportions, columns=[f'Species {i}' for i in range(1, data.shape[1] + 1)])
-
-# Define colors for each species
-species_colors = ['red', 'green', 'blue', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
-
-# Create an area plot using fill_between
-fig, ax = plt.subplots(figsize=(12, 6))
-
-# Calculate cumulative sum for each species
-cumulative_proportions = np.cumsum(proportions, axis=1)
-
-for i, col in enumerate(proportions_df.columns):
-    # For the first species, fill between 0 and the proportion
-    if i == 0:
-        ax.fill_between(proportions_df.index, 0, cumulative_proportions[:, i], label=col, color=species_colors[i])
-    # For subsequent species, fill between the cumulative sum of the previous species and the current species
-    else:
-        ax.fill_between(proportions_df.index, cumulative_proportions[:, i - 1], cumulative_proportions[:, i], label=col, color=species_colors[i])
-
-# Modify x-axis and y-axis labels
-ax.set(xlabel='Step', ylabel='Proportion')
-
-# Move the legend outside the plot
-ax.legend(loc='upper left', bbox_to_anchor=(1, 1))
-
-# Show the plot
-plt.title(f'Area Plot for Proportions of Species over Steps')
-plt.tight_layout()  # Adjust layout to prevent clipping
-plt.savefig("tool3_plot3_GD.pdf", format='pdf', bbox_inches='tight',dpi=600)  # Use bbox_inches to include the legend properly
-
-plt.show()
-plt.close()
-
-
-source_path = "tool3_plot3_GD.pdf"
-destination_path = 'GD'
-shutil.move(source_path, destination_path)
-
-
-source_path = "tool3_plot2_GD.pdf"
-destination_path = 'GD'
-shutil.move(source_path, destination_path)
-
-
-source_path = "tool3_plot1_GD.pdf"
-destination_path = 'GD'
-shutil.move(source_path, destination_path)
 
 # Outputs
 
