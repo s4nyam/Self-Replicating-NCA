@@ -283,7 +283,7 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     new_ca_grid = ca_grid.clone()
     print("New CA grid initialised temporarily:")
     print(new_ca_grid)
-
+    just_inherited_indices = []
     def process_neighborhood(i, j, idx, ca_nn_list):
         print("")
         print("")
@@ -347,6 +347,7 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
                 has_nonzero_weights_current = any(torch.any(param != 0) for param in current_nn.parameters())
 
                 if not has_nonzero_weights_current:
+                    just_inherited_indices.append(idx)
                     # Copy the neural network from the selected neighboring pixel
                     ca_nn_list[idx] = copy.deepcopy(selected_nn)
                     print("AM I EVEN ENTERING HERE")
@@ -390,9 +391,10 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
         else:
             # Return a default value (all zeros) if output is None
             return [0.0] * NUM_LAYERS, can_nn_updated_single
-
+    print("------------------------------------Scanning each cell------------------------------------")
     idx = 0  # Index for the neural networks
     ca_nn_list_temp = []
+    
     for i in range(WIDTH):
         for j in range(HEIGHT):
             # print("------------------------------------------------------------------")
@@ -499,12 +501,8 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     idx_final_annns_counter = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
-            
             if (budget_counter_grid[x,y] == 0):
-                leaked_ann = ca_nn_list_temp[final_annns_counter]
-                weights_are_nonzero = any(torch.any(param != 0) for param in leaked_ann.parameters())
-                if(weights_are_nonzero): # meaning weights_are_nonzero and alpha is 0 that means cell has died and we need to stop leakage by making ths ANN 0
-                    idx_final_annns_counter.append(final_annns_counter) # add another if condition to append indices for the ones that have non zero weights but their alpha is 0
+                idx_final_annns_counter.append(final_annns_counter) 
                 for layer in range(NUM_LAYERS):
                     print("Resetting CHANNELS threshold reached")
                     new_ca_grid_temp[layer, x, y] = 0.0
@@ -513,7 +511,8 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     if(len(idx_final_annns_counter)>0):
         for ii in range(len(ca_nn_list_temp)):
             if ii in idx_final_annns_counter:
-                ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
+                if ii not in just_inherited_indices: # Check to not make the ANNs that are just inherited and hence dont make them 0 accidently
+                    ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
     return new_ca_grid_temp, ca_nn_list_temp
 
 if not os.path.exists('sim_frames_png'):
