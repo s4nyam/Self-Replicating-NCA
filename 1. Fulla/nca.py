@@ -28,18 +28,18 @@ sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 200,200
+WIDTH, HEIGHT = 50,50
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.0002
+INIT_PROBABILITY = 0.0040
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
-INHERTIANCE_PROBABILITY  = 0.02 # probability that neighboring cells will inherit by perturbation.
+INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit by perturbation.
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 10000
+NUM_STEPS = 25
 num_steps = NUM_STEPS
 at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
 probability_death = 0.004 # 40 pixels die every generation
@@ -439,7 +439,6 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     index_temp_budget_counter_grid_iterator = []
     for i in range(WIDTH):
         for j in range(HEIGHT):
-            temp_budget_counter_grid_iterator = temp_budget_counter_grid_iterator + 1
             if round(new_ca_grid_temp[0, i, j].item(),precision) > ALPHA:
                 print("Incrementing the counter with 1 for budget increment")
                 budget_counter_grid[i,j] = budget_counter_grid[i,j] + 1 # Budget consumed per generation
@@ -449,6 +448,7 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
                 # index_temp_budget_counter_grid_iterator.append(temp_budget_counter_grid_iterator)
                 # for layer in range(NUM_LAYERS):
                 #     new_ca_grid_temp[layer, x, y] = 0.0
+            temp_budget_counter_grid_iterator = temp_budget_counter_grid_iterator + 1
 
     if(len(index_temp_budget_counter_grid_iterator)>0):
         for ii in range(len(ca_nn_list_temp)):
@@ -464,7 +464,6 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     index_death_collected_budget = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
-            counter_death_budget = counter_death_budget + 1
             if (budget_counter_grid[x,y]>budget_per_cell): # check for budget limit
                 # If any value is less than ALPHA, set values in all layers at the current position to 0
                 print("Threshold reached Threshold reached Threshold reached!!!!")
@@ -473,6 +472,7 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
                 for layer in range(NUM_LAYERS):
                     print("Resetting CHANNELS threshold reached")
                     new_ca_grid_temp[layer, x, y] = 0.0
+            counter_death_budget = counter_death_budget + 1
                     
     print("Budget Counter Grid - After resetting in case it reaches threshold")
     print(budget_counter_grid)
@@ -485,14 +485,35 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     print("------------------------------------BUDGET COUNTER CHECKS------------------------------------")
     print(new_ca_grid_temp)
 
-    print("------------------------------------MAKE FINAL CHECK TO REPLACE ALPHA WITH 0------------------------------------")
+    print("------------------------------------MAKE FINAL CHECK TO REPLACE ALPHA WITH 0 and ANNs null------------------------------------")
+    # for x in range(WIDTH):
+    #     for y in range(HEIGHT):
+    #         if (budget_counter_grid[x,y] == 0):
+    #             for layer in range(NUM_LAYERS):
+    #                 print("Resetting CHANNELS threshold reached")
+    #                 new_ca_grid_temp[layer, x, y] = 0.0
+    
+
+    # Make ANNs also die for the same places (again!!!)
+    final_annns_counter = 0
+    idx_final_annns_counter = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
+            
             if (budget_counter_grid[x,y] == 0):
+                leaked_ann = ca_nn_list_temp[final_annns_counter]
+                weights_are_nonzero = any(torch.any(param != 0) for param in leaked_ann.parameters())
+                if(weights_are_nonzero): # meaning weights_are_nonzero and alpha is 0 that means cell has died and we need to stop leakage by making ths ANN 0
+                    idx_final_annns_counter.append(final_annns_counter) # add another if condition to append indices for the ones that have non zero weights but their alpha is 0
                 for layer in range(NUM_LAYERS):
                     print("Resetting CHANNELS threshold reached")
                     new_ca_grid_temp[layer, x, y] = 0.0
-    
+            final_annns_counter = final_annns_counter + 1
+
+    if(len(idx_final_annns_counter)>0):
+        for ii in range(len(ca_nn_list_temp)):
+            if ii in idx_final_annns_counter:
+                ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
     return new_ca_grid_temp, ca_nn_list_temp
 
 if not os.path.exists('sim_frames_png'):
