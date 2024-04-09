@@ -28,10 +28,10 @@ sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 50,50
+WIDTH, HEIGHT = 200,200
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.0040
+INIT_PROBABILITY = 0.0002
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
@@ -39,7 +39,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 25
+NUM_STEPS = 1000
 num_steps = NUM_STEPS
 at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
 probability_death = 0.004 # 40 pixels die every generation
@@ -511,7 +511,8 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
     if(len(idx_final_annns_counter)>0):
         for ii in range(len(ca_nn_list_temp)):
             if ii in idx_final_annns_counter:
-                if ii not in just_inherited_indices: # Check to not make the ANNs that are just inherited and hence dont make them 0 accidently
+                # Check to not make the ANNs that are just inherited and hence dont make them 0 accidently
+                if ii not in just_inherited_indices: # This ensures that only make those ANNs to 0 that are not in the just_inherited_indices so that only dead ANNs gets removed and not the inherited ones (because just_inherited ANNs also has 0 alpha)
                     ca_nn_list_temp[ii].apply(initialize_weights_to_zero)
     return new_ca_grid_temp, ca_nn_list_temp
 
