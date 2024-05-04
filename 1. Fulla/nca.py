@@ -28,10 +28,10 @@ sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 200,200
+WIDTH, HEIGHT = 50,50
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.0002
+INIT_PROBABILITY = 0.1
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
 NUM_LAYERS = 2 # rest hidden and one alpha
 ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
@@ -39,7 +39,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 1000
+NUM_STEPS = 100
 num_steps = NUM_STEPS
 at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
 probability_death = 0.004 # 40 pixels die every generation
@@ -48,7 +48,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {DEVICE}")
 activation = 'sigmoid' # ['sigmoid','tanh','noact']
 frequency_dicts = []
-FPS = 10 # Speed of display for animation of NCA and plots
+FPS = 1 # Speed of display for animation of NCA and plots
 marker_size = 2 # for plots
 everystep_weights = [] # Stores weigths of the NNs from every time step.
 KMEANS_K = 5
@@ -254,7 +254,7 @@ print("Entering update loop >>>>>")
 
 def initialize_weights(module):
     if isinstance(module, nn.Linear):
-        nn.init.xavier_normal_(module.weight)
+        nn.init.xavier_uniform_(module.weight)
         nn.init.zeros_(module.bias)
 def initialize_weights_to_zero(module):
     if isinstance(module, nn.Linear):
@@ -359,7 +359,7 @@ def update_ca(ca_grid, ca_nn_list,frame_number):
                         if 'weight' in name:
                             mask = torch.rand_like(param.data) < parameter_perturbation_probability
                             with torch.no_grad():
-                                param.data += mask * torch.randn_like(param.data)
+                                param.data += mask * (torch.rand_like(param.data) - 0.5) * 2 # Achieves a value between -1 to 1
                 else:
                     ca_nn_list[idx] = copy.deepcopy(selected_nn)
         else:
@@ -1092,6 +1092,26 @@ source_path = "tool234_PD.pdf"
 destination_path = 'PD'
 shutil.move(source_path, destination_path)
 
+# Plot tools PD 2,4
+import matplotlib.pyplot as plt
+plot_data_tool2 = Global_Entropies_H_ts
+plot_data_tool4 = sigma_global
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(plot_data_tool2, marker='o', markersize=marker_size, label='H$_t$') #  for Tool 2
+# ax.plot(plot_data_tool3, marker='s', markersize=marker_size, label='σ$_{gross}$') # for Tool 3
+ax.plot(plot_data_tool4, marker='^', markersize=marker_size, label='σ$_{glob}$') # for Tool 4
+ax.set_xlabel('X-axis Label')
+ax.set_ylabel('Y-axis Label')
+ax.set_title('All Tool Information in a Single Plot')
+ax.legend()
+plt.grid(True)
+plt.savefig("tool24_PD.pdf",format='pdf', dpi=600)
+plt.show()
+plt.close()
+source_path = "tool24_PD.pdf"
+destination_path = 'PD'
+shutil.move(source_path, destination_path)
+
 
 # GD Tools:
 # RWSP Tool Tool 1
@@ -1139,28 +1159,57 @@ if not os.path.exists('gd_rwsp_frames_png'):
 if not os.path.exists('gd_rwsp_frames_pdf'):
     os.makedirs('gd_rwsp_frames_pdf')
 
-def save_frame(frame, fig):
-    im = plt.imshow(normalized_data[frame],cmap='jet')
+def save_frame(frame, fig, normalized_data, counts_per_frame):
+    im = plt.imshow(normalized_data[frame], cmap='jet')
     plt.title(f'Generation {frame + 1}')
-    cax = fig.add_axes([0.08, 0.94, 0.15, 0.02])
-    colorbar = fig.colorbar(im, cax=cax, orientation='horizontal', shrink=0.7)
-    min_value = np.min(normalized_data[frame])
-    max_value = np.max(normalized_data[frame])
-    mid_value = (min_value + max_value) / 2
-    ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
-    rounded_ticks = [round(value) for value in ticks]
-    ticks = rounded_ticks
-    colorbar.set_ticks(ticks)
-    colorbar.ax.tick_params(axis='x', labelsize=6)
+    # cax = fig.add_axes([0.08, 0.94, 0.15, 0.02])
+    # colorbar = fig.colorbar(im, cax=cax, orientation='horizontal', shrink=0.7)
+    # min_value = np.min(normalized_data[frame])
+    # max_value = np.max(normalized_data[frame])
+    # mid_value = (min_value + max_value) / 2
+    # ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
+    # rounded_ticks = [round(value) for value in ticks]
+    # ticks = rounded_ticks
+    # colorbar.set_ticks(ticks)
+    # colorbar.ax.tick_params(axis='x', labelsize=6)
+
+    # Count unique RGB colors
+    flattened_data = normalized_data[frame].reshape(-1, 3)
+    print("flattened_data")
+    print(flattened_data)
+    unique_colors, counts = np.unique(flattened_data, axis=0, return_counts=True)
+    print("unique_colors")
+    print(unique_colors)    
+    unique_colors_count = len(unique_colors)
+
+    # Store the count of unique RGB colors for this frame
+    counts_per_frame.append(unique_colors_count-1)
+
+    # Save the plot
     plt.savefig(os.path.join('gd_rwsp_frames_png', f"{frame + 1:07d}.png"), format='png', dpi=600)
     plt.savefig(os.path.join('gd_rwsp_frames_pdf', f"{frame + 1:07d}.pdf"), format='pdf', dpi=600)
     plt.clf()
 
+# Example usage
+counts_per_frame = []
+
 for frame in range(length):
     fig = plt.figure()
-    save_frame(frame,fig)
+    save_frame(frame, fig, normalized_data, counts_per_frame)
     plt.close(fig)
-    plt.close()
+
+
+counts_rwsp = counts_per_frame
+# Plot the count of unique RGB colors
+plt.figure(figsize=(12, 8))
+plt.plot(range(0, length), counts_per_frame, marker='o', linestyle='-', label='Unique RGB Colors Count - RWSP', color='blue')
+plt.xlabel('Generation')
+plt.ylabel('Count')
+plt.title('Unique RGB Colors Count per Generation - RWSP')
+plt.legend()
+plt.savefig('unique_rgb_colors_count_plot_rwsp.png', format='png', dpi=600)
+plt.savefig('unique_rgb_colors_count_plot_rwsp.pdf', format='pdf', dpi=600)
+plt.show()
 
 
 
@@ -1219,6 +1268,16 @@ source_path = "gd_rwsp_frames_pdf"
 destination_path = 'GD'
 shutil.move(source_path, destination_path)
 
+
+source_path = "unique_rgb_colors_count_plot_rwsp.png"
+destination_path = 'GD'
+shutil.move(source_path, destination_path)
+
+
+source_path = "unique_rgb_colors_count_plot_rwsp.pdf"
+destination_path = 'GD'
+shutil.move(source_path, destination_path)
+
 # GHC Tool Tool 2
 import numpy as np
 import random
@@ -1227,9 +1286,13 @@ list_of_weights_at_every_step = round_elements_in_nested_list(this_list_should_c
 sample = list_of_weights_at_every_step
 sample = np.array(sample)
 params = sample[0][0].shape[0]
+print("PARAMSPARAMSPARAMSPARAMSPARAMSPARAMSPARAMSPARAMS")
+print(params)
+print("PARAMSPARAMSPARAMSPARAMSPARAMSPARAMSPARAMSPARAMS")
 sample = sample.reshape(NUM_STEPS+1,WIDTH,HEIGHT,params)
-height, width = sample.shape[1]-1, sample.shape[2]-1
-length_sim = sample.shape[0]-1
+print(sample.shape)
+height, width = sample.shape[1], sample.shape[2]
+length_sim = sample.shape[0]
 
 import random
 import numpy as np
@@ -1245,6 +1308,8 @@ if not os.path.exists(output_folder2):
     os.makedirs(output_folder2)
 # sample[8][0] # weights of the NN at different time steps
 # fig, ax = plt.subplots()
+ghc_scaling_factor = 10
+counts_per_frame = []
 for i in range(length_sim):
   # Function to hash a 44-bit gene sequence to 24 bits using Python's built-in hash function
   def hash_gene_sequence(gene_sequence):
@@ -1263,7 +1328,7 @@ for i in range(length_sim):
   # Populate the grid with color-coded gene sequences
   for row in range(height):
       for col in range(width):
-          gene_sequence = sample[i][row][col]
+          gene_sequence = ghc_scaling_factor * sample[i][row][col]
           gene_sequence = gene_sequence.tolist()
           hashed_sequence = hash_gene_sequence(gene_sequence)
           r, g, b = split_to_rgb(hashed_sequence)
@@ -1271,22 +1336,46 @@ for i in range(length_sim):
   frame_filename = os.path.join(output_folder2, f"{i + 1:07d}.pdf")
   fig = plt.figure()
   im = plt.imshow(grid,interpolation='none',cmap='jet')
+  # Count unique RGB colors
+  flattened_data = grid.reshape(-1, 3)
+  print("flattened_data")
+  print(flattened_data)
+  unique_colors, counts = np.unique(flattened_data, axis=0, return_counts=True)
+  print("unique_colors")
+  print(unique_colors)    
+  unique_colors_count = len(unique_colors)
+  # Store the count of unique RGB colors for this frame
+  counts_per_frame.append(unique_colors_count-1)  
   plt.title(f'Generation {i + 1}')
-  cax = fig.add_axes([0.08, 0.94, 0.15, 0.02])
-  colorbar = fig.colorbar(im, cax=cax, orientation='horizontal', shrink=0.7)
-  min_value = np.min(grid)
-  max_value = np.max(grid)
-  mid_value = (min_value + max_value) / 2
-  ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
-  rounded_ticks = [round(value) for value in ticks]
-  ticks = rounded_ticks
-  colorbar.set_ticks(ticks)
-  colorbar.ax.tick_params(axis='x', labelsize=6)
+#   cax = fig.add_axes([0.08, 0.94, 0.15, 0.02])
+#   colorbar = fig.colorbar(im, cax=cax, orientation='horizontal', shrink=0.7)
+#   min_value = np.min(grid)
+#   max_value = np.max(grid)
+#   mid_value = (min_value + max_value) / 2
+#   ticks = [min_value, (min_value + mid_value) / 2, mid_value, (mid_value + max_value) / 2, max_value]  # Include midpoints
+#   rounded_ticks = [round(value) for value in ticks]
+#   ticks = rounded_ticks
+#   colorbar.set_ticks(ticks)
+#   colorbar.ax.tick_params(axis='x', labelsize=6)
   # plt.axis('off')
   plt.savefig(frame_filename,format='pdf',dpi=600)
   frame_filename = os.path.join(output_folder, f"{i + 1:07d}.png")
   plt.savefig(frame_filename,format='png',dpi=600)
   plt.close()
+
+
+counts_ghc = counts_per_frame
+# Plot the count of unique RGB HASH colors
+plt.figure(figsize=(12, 8))
+plt.plot(range(0, length_sim), counts_per_frame, marker='o', linestyle='-', label='Unique RGB Colors Count - GHC', color='blue')
+plt.xlabel('Generation')
+plt.ylabel('Count')
+plt.title('Unique RGB Colors Count per Generation - GHC')
+plt.legend()
+plt.savefig('unique_rgb_colors_count_plot_ghc.png', format='png', dpi=600)
+plt.savefig('unique_rgb_colors_count_plot_ghc.pdf', format='pdf', dpi=600)
+plt.show()
+
 
 # Display the combined clustering plot
 frames_folder = output_folder
@@ -1331,6 +1420,29 @@ subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess
 
 
 
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 6))
+generations = range(0, length_sim)
+# Plot counts_rwsp with a solid line and square markers
+plt.plot(generations, counts_rwsp, linestyle='-', marker='s', color='blue', label='RWSP')
+
+# Plot counts_ghc with a dashed line and circle markers
+plt.plot(generations, counts_ghc, linestyle='--', marker='o', color='red', label='GHC')
+
+plt.xlabel('Generation')
+plt.ylabel('Unique Colors')
+plt.title('Unqiue Color Counts for RWSP and GHC Plot')
+plt.legend()
+# plt.grid(True)  # Add grid for better readability
+
+plt.tight_layout()  # Adjust layout to prevent clipping of labels
+plt.savefig('combined_rwsp_ghc.png', format='png', dpi=600)  # Save plot as PNG
+plt.savefig('combined_rwsp_ghc.pdf', format='pdf', dpi=600)  # Save plot as PNG
+plt.show()
+plt.close()
+
+
 
 source_path = "tool2_gd_ghc_video.mp4"
 destination_path = 'GD'
@@ -1348,6 +1460,25 @@ source_path = "gd_ghc_frames_pdf"
 destination_path = 'GD'
 shutil.move(source_path, destination_path)
 
+source_path = "unique_rgb_colors_count_plot_ghc.png"
+destination_path = 'GD'
+shutil.move(source_path, destination_path)
+
+
+source_path = "unique_rgb_colors_count_plot_ghc.pdf"
+destination_path = 'GD'
+shutil.move(source_path, destination_path)
+
+
+
+source_path = "combined_rwsp_ghc.png"
+destination_path = 'GD'
+shutil.move(source_path, destination_path)
+
+
+source_path = "combined_rwsp_ghc.pdf"
+destination_path = 'GD'
+shutil.move(source_path, destination_path)
 
 
 # Outputs
