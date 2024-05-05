@@ -39,7 +39,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 100
+NUM_STEPS = 500
 num_steps = NUM_STEPS
 at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
 probability_death = 0.004 # 40 pixels die every generation
@@ -1425,16 +1425,20 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(10, 6))
 generations = range(0, length_sim)
 # Plot counts_rwsp with a solid line and square markers
-plt.plot(generations, counts_rwsp, linestyle='-', marker='s', color='blue', label='RWSP')
+plt.plot(generations, counts_rwsp, linestyle='-', marker='s', color='blue', label='RWSP', markersize=marker_size)
 
 # Plot counts_ghc with a dashed line and circle markers
-plt.plot(generations, counts_ghc, linestyle='--', marker='o', color='red', label='GHC')
+plt.plot(generations, counts_ghc, linestyle='--', marker='o', color='red', label='GHC', markersize=marker_size)
 
 plt.xlabel('Generation')
 plt.ylabel('Unique Colors')
 plt.title('Unqiue Color Counts for RWSP and GHC Plot')
 plt.legend()
 # plt.grid(True)  # Add grid for better readability
+
+# Calculate step size automatically
+step_size = max(1, len(generations) // 20)  # You can adjust 20 based on your preference
+plt.xticks(range(0, length_sim, step_size))  # Adjust the range and step as needed
 
 plt.tight_layout()  # Adjust layout to prevent clipping of labels
 plt.savefig('combined_rwsp_ghc.png', format='png', dpi=600)  # Save plot as PNG
