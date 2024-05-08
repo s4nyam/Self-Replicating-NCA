@@ -1,7 +1,7 @@
-def print(*args, **kwargs):
-    # Uncomment the next line to enable printing
-    # built_in_print(*args, **kwargs)
-    pass
+# def print(*args, **kwargs):
+#     # Uncomment the next line to enable printing
+#     # built_in_print(*args, **kwargs)
+#     pass
 import torch
 from PIL import Image
 import shutil
@@ -28,7 +28,7 @@ sys.setrecursionlimit(10**6)
 
 precision = 1
 torch.set_printoptions(precision=precision)
-WIDTH, HEIGHT = 50,50
+WIDTH, HEIGHT = 100,100
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
 INIT_PROBABILITY = 0.1
@@ -39,7 +39,7 @@ INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
-NUM_STEPS = 500
+NUM_STEPS = 1000
 num_steps = NUM_STEPS
 at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
 probability_death = 0.004 # 40 pixels die every generation
@@ -48,8 +48,8 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {DEVICE}")
 activation = 'sigmoid' # ['sigmoid','tanh','noact']
 frequency_dicts = []
-FPS = 1 # Speed of display for animation of NCA and plots
-marker_size = 2 # for plots
+FPS = 10 # Speed of display for animation of NCA and plots
+marker_size = 1 # for plots
 everystep_weights = [] # Stores weigths of the NNs from every time step.
 KMEANS_K = 5
 enable_annotations_on_nca = True
@@ -1425,10 +1425,10 @@ import matplotlib.pyplot as plt
 plt.figure(figsize=(10, 6))
 generations = range(0, length_sim)
 # Plot counts_rwsp with a solid line and square markers
-plt.plot(generations, counts_rwsp, linestyle='-', marker='s', color='blue', label='RWSP', markersize=marker_size)
+plt.plot(generations, counts_rwsp, linestyle='-', marker='s', color='blue', label='RWSP', markersize=0.5*marker_size)
 
 # Plot counts_ghc with a dashed line and circle markers
-plt.plot(generations, counts_ghc, linestyle='--', marker='o', color='red', label='GHC', markersize=marker_size)
+plt.plot(generations, counts_ghc, linestyle='-', marker='o', color='red', label='GHC', markersize=0.5*marker_size)
 
 plt.xlabel('Generation')
 plt.ylabel('Unique Colors')
