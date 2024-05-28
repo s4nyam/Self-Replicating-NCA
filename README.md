@@ -336,6 +336,8 @@ This classification of Experiment Size is done to avoid runtime collapse because
 | 100by100, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 1000generations, sigmoid, b4      | [Download exp2.tar](https://drive.google.com/file/d/1XzvSMeqY86RdhHC0L8AFLkmeDNme4n3u/view?usp=sharing)  |
 | 200by200, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 100generations, sigmoid, b4      | [Download exp3.tar](https://drive.google.com/file/d/19BbSy7lBj4c6fg9FZcgnFpKdS66lwgnJ/view?usp=sharing)  |
 | 300by300, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 100generations, sigmoid, b4      | [Download exp4.tar](https://drive.google.com/file/d/154mO_AcRLj9dNwg86gmpJQjx6o25Ekrr/view?usp=sharing)  |
+| 5 times 200by200, 0.02init, 2layers, 0.5alpha, 0.1ip, 0.02ppp, 1000generations, tanh, b8      | [Download exp5.tar](https://drive.google.com/file/d/18tZu0OuDtBvgtwoayl8ewscG2gHEABKo/view?usp=sharing)  |
+
 
 ## Cite this
 To cite this repository:
