@@ -98,6 +98,7 @@ Please refer to report document for further conceptual and implementation detail
 * [Using SLURM for Larger Experiments](#using-slurm-for-larger-experiments)
 * [Configuration on Simula eX3](#configuration-on-simula-ex3)
 * [SageMaker instance](#sagemaker-instance)
+* [Experiments](#experiments)
 * [Cite this](#cite-this)
 * [Working pipeline](#working-pipeline)
 
@@ -324,6 +325,8 @@ We use AWS SageMaker for the easiness to process experimental results. Specifica
 | ml.r5.24xlarge   | 96   | 768 GiB | $7.258         |<100 GB|
 
 This classification of Experiment Size is done to avoid runtime collapse because of the memory outage during the processing of the results for the experiments. We could have produced results on runtime while experimenting using SLURM experiments, however to modularise and balance the workload, we preferred to save the weights for one time, and then process results later if required. This also brought flexibility to improve existing code bases for processing results and add more tools later for our project. We release ```2_sagemaker.ipynb``` to process the experiments. This notebook takes public URLs of the experimentation and process results. We also release public URLs of the experiments that can be processed using this notebook.
+
+## Experiments
 
 | Experiment | Download Link                                      |
 |------------|-----------------------------------------------------|
