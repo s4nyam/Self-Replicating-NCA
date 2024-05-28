@@ -21,38 +21,43 @@
 </a><br/>
 This repo is code supplement for MSc. thesis at <a href="https://www.hiof.no/english/">HiØ</a> under supervision of prof <a href="https://www.nichele.eu/">Stefano Nichele</a> for the June, 2024.
 
-This project implements the Neural CA Frameowork where self-replication with mutation is the only way for cells to live longer. We study and Analyse the growht in Phenotypic Diversity (PD) and Genetic Diversity (GD) over longer time steps. Specifically, we intend to study, formalise and propose three tools to analyse GD and four tools for PD. Specifically, GD level tools are (1) Random Weight Selection Plot (RWSP), (2) Clustering Neural Weights Approach (CNWA) and (3) Genotypic Hash Coloring (GHC). PD level tools include (1) Cellular Type Frequency Plot (CTFP), (2) Global Entropy Plot (GEP), (3) Gross Cell Variance Plot (GCVP), and (4) Cell Local Organisation Global Variance (CLOGV).
+This project implements the Neural CA Frameowork where self-replication with mutation is the only way for cells to live longer. We study and Analyse the growht in Phenotypic Diversity (PD) and Genetic Diversity (GD) over longer time steps. Specifically, we intend to study, formalise and propose three tools to analyse GD and four tools for PD. Specifically, GD level tools are (1) Random Weight Selection Plot (RWSP), (2) Genotypic Hash Coloring (GHC) and (3) Combined count plot of unique colors. PD level tools include (1) Cellular Type Frequency Plot (CTFP), (2) Global Entropy Plot (GEP), (3) Gross Cell Variance Plot (GCVP), and (4) Cell Local Organisation Global Variance (CLOGV).
 
 ## Quick Demo Configuration:
 ```python
-WIDTH, HEIGHT = 200,200
-INIT_PROBABILITY = 0.0005
+WIDTH, HEIGHT = 300,300
+INIT_PROBABILITY = 0.1
 NUM_LAYERS = 2
 ALPHA = 0.5 
 INHERTIANCE_PROBABILITY  = 0.2
-parameter_perturbation_probability = 0.1
-NUM_STEPS = 1000
-activation = 'tanh' # ['sigmoid','tanh','noact']
+parameter_perturbation_probability = 0.2
+NUM_STEPS = 300
+activation sigmoid on board
 FPS = 10
+budget = 4  # Cells die after 4 generations
 ```
 
+Visit youtube channel for Demos - https://www.youtube.com/@growingnca/playlists
+![Screenshot 2024-05-28 at 12 18 03 PM](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/cb0567c2-c8ce-4c83-833d-afb074b5adfd)
+
 ## Quick Demo NCA Video (Redirects YouTube)
-[![NCA Video](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/f4dfb09b-014e-46a1-9490-b7b9969825f7)](https://youtu.be/tNrphmZuk0Y)
+https://www.youtube.com/watch?v=kD6vfKnRA-I&list=PL_IJ0j36aBCbmN7_OvWWdjNVw-QhXFfZo&index=1&pp=gAQBiAQB8AUB
 
 ## CTFP
-![CTFP](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/d001e49a-1d8e-4b5f-9c98-bb085da85a95)
+![Screenshot 2024-05-28 at 12 19 20 PM](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/1fe35895-83c4-42f7-941b-59731bd7a49d)
 
 ## GEP+GCVP+CLOGV - Phenotypic Diversity
-![GEP+GCVP+CLOGV](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/8cbd6761-de48-4d7e-bfd4-4e8dfa11ed34)
+![Screenshot 2024-05-28 at 12 19 32 PM](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/8498b34a-746f-4126-941d-3660e2f6a62b)
 
 
 ## Quick Demo RWSP Video (Redirects YouTube)
-[![NCA Video](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/d909a461-bf3e-4f92-b8ff-e4e2956c01a7)](https://youtu.be/OseL2P-ERio)
+https://www.youtube.com/watch?v=2fDUCPR4kk8&list=PL_IJ0j36aBCbmN7_OvWWdjNVw-QhXFfZo&index=2&pp=gAQBiAQB8AUB
 
 ## Quick Demo GHC Video (Redirects YouTube)
-[![NCA Video](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/f3497c9c-385f-4cc0-8335-4d566bb1b08b)](https://youtu.be/O4aiVGomvuY)
+https://www.youtube.com/watch?v=KbvLTyEpMYM&list=PL_IJ0j36aBCbmN7_OvWWdjNVw-QhXFfZo&index=3&pp=gAQBiAQB8AUB
 
-
+## RWSP and GHC Count Plot
+![Screenshot 2024-05-28 at 12 20 09 PM](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/12ced9af-88dd-4be2-b16f-30138bdb71b0)
 
 Research Questions:
 1. What are the key species that emerge, survive, reproduce and becomes extinct (dead)
