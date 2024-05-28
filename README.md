@@ -100,7 +100,6 @@ Please refer to report document for further conceptual and implementation detail
 * [SageMaker instance](#sagemaker-instance)
 * [Experiments](#experiments)
 * [Cite this](#cite-this)
-* [Working pipeline](#working-pipeline)
 
 ## Open in Colab
 <a target="_blank" href="https://colab.research.google.com/drive/1HYKttER_0I6HD1y1oDdg_MLG0D21vMxB?usp=sharing">
