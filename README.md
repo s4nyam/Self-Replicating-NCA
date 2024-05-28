@@ -147,18 +147,23 @@ With this configuration it simulates the proposed NCA framework. And then result
 Beyond that it produces more results that are related to Phenotypic Diversity (PD) and Genotypic Diversity. PD tools are shown below:
 
 * CTFP Plot - Frequency Count Plot
+
 ![download](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/f494caca-4dc0-4efa-8cbc-3a2cc86ffdbf)
 
 * GEP+GCVP+CLOGV (Phenotypic Diversity and Randomness)
+
 ![download](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/398631f9-b709-4ed3-b56a-0c6b41db30e5)
 
 * GD Unique Color Count Plots (GHC and RWSP)
+
 ![download-1](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/c399e50e-9e1c-492a-8fb3-96f176447423)
 
 * RWSP Animation
+
 ![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/8b4eda32-c45f-42fd-8ca1-208e4929418e)
 
 * GHC Animation
+
 ![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/6b1b91f0-23a3-41e4-bf31-b65ee8ba576c)
 
 
