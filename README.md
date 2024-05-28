@@ -232,10 +232,13 @@ pandas==1.3.3
 ```
 ## Configuration on Simula eX3
 Following configuration was used with multiple nodes of each platform to fasten the multi-fold experiments. 
-| Platform  | Model   | GPU            | Processor                                      | 
-|-----------|---------|----------------|------------------------------------------------|
-| x64_64/A100 | hgx2q | g002 | DualProcessor AMD EPYC Milan 7763 64-core w/ 8 qty Nvidia Volta A100/80GB |
-| x64_64/V100 | dgx2q | g001 | DualProcessor Intel Xeon Scalable Platinum 8176 w/ 16 qty Nvidia Volta V100 |
+| Platform      | Model   | GPU  | Processor                                         | 
+|---------------|---------|------|---------------------------------------------------|
+| x64_64/A100   | hgx2q   | g002 | DualProcessor AMD EPYC Milan 7763 64-core w/ 8 qty Nvidia Volta A100/80GB |
+| x64_64/V100   | dgx2q   | g001 | DualProcessor Intel Xeon Scalable Platinum 8176 w/ 16 qty Nvidia Volta V100 |
+| x86_64/cpu | xeonmaxq     | n022 | DualProcessor Intel Xeon Max Q with mix configuration | 
+| x86_64/cpu | genoaxq     | n021 | DualProcessor (Epyc or Xeon) with mix configuration | 
+
 
 ## SageMaker instance
 We use AWS SageMaker for the easiness to process experimental results. Specifically, for the exports that we receive from SLURM experiments, which are as pickle files containing evolved weights and stored grids. SageMaker notebook instance used with almost 500 GB of storage and following system configurations as per the size of experiment exports.
@@ -275,11 +278,6 @@ To cite this repository:
   year = {2023},
 }
 ```
-
-
-## Sample 900 steps
-
-https://github.com/s4nyam/MasterThesis/assets/13884479/57d5e84b-9381-445e-b9d3-342f065d89b7
 
 
 ## Working pipeline
