@@ -108,6 +108,7 @@ Please refer to report document for further conceptual and implementation detail
 
 Use the colab button above to directly start reproducing the code. You can also import [1_colab.ipynb](https://github.com/s4nyam/MasterThesis/blob/main/1_colab.ipynb) into your notebook / ipython environment. The advantage of Google Colab is to debug and quickly test the actual framework. We set the following parameters in first cell of the notebook and rest of the cooking material evolves the NCA and generate corresponding results.
 
+### Experiment 1
 ```python
 precision = 1
 torch.set_printoptions(precision=precision)
@@ -134,7 +135,6 @@ frequency_dicts = []
 FPS = 10 # Speed of display for animation of NCA and plots
 marker_size = 1 # for plots
 everystep_weights = [] # Stores weigths of the NNs from every time step.
-KMEANS_K = 5
 enable_annotations_on_nca = True
 budget_per_cell = 3
 fixed_value = 0
@@ -165,6 +165,61 @@ Beyond that it produces more results that are related to Phenotypic Diversity (P
 * GHC Animation
 
 ![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/6b1b91f0-23a3-41e4-bf31-b65ee8ba576c)
+
+
+### Experiment 2
+```python
+precision = 1
+torch.set_printoptions(precision=precision)
+WIDTH, HEIGHT = 30,30
+grid_size = (WIDTH, HEIGHT)
+print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
+INIT_PROBABILITY = 0.09
+min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
+NUM_LAYERS = 2 # rest hidden and one alpha
+ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
+INHERTIANCE_PROBABILITY  = 0.1 # probability that neighboring cells will inherit by perturbation.
+parameter_perturbation_probability = 0.02
+print("Numbers of layers used are {}".format(NUM_LAYERS))
+print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
+NUM_STEPS = 90
+num_steps = NUM_STEPS
+at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
+probability_death = 0.004 # 40 pixels die every generation
+print("Numbers of Time Steps are {}".format(NUM_STEPS))
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {DEVICE}")
+activation = 'sigmoid' # ['sigmoid','tanh','noact']
+frequency_dicts = []
+FPS = 10 # Speed of display for animation of NCA and plots
+marker_size = 1 # for plots
+everystep_weights = [] # Stores weigths of the NNs from every time step.
+enable_annotations_on_nca = True
+budget_per_cell = 999999999
+fixed_value = 0
+budget_counter_grid = np.zeros((WIDTH, HEIGHT)) + fixed_value
+```
+
+With this configuration it simulates the proposed NCA framework. And then results a simulation like:
+
+
+Beyond that it produces more results that are related to Phenotypic Diversity (PD) and Genotypic Diversity. PD tools are shown below:
+
+* CTFP Plot - Frequency Count Plot
+
+
+* GEP+GCVP+CLOGV (Phenotypic Diversity and Randomness)
+
+
+* GD Unique Color Count Plots (GHC and RWSP)
+
+
+* RWSP Animation
+
+
+* GHC Animation
+
+
 
 
 ## Using SLURM for Larger Experiments
