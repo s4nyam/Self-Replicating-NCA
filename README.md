@@ -107,7 +107,7 @@ Please refer to report document for further conceptual and implementation detail
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-Use the colab button above to directly start reproducing the code. You can also import [1_colab.ipynb](https://github.com/s4nyam/MasterThesis/blob/main/1_colab.ipynb) into your notebook / ipython environment. The advantage of Google Colab is to debug and quickly test the actual framework. We set the following parameters in first cell of the notebook and rest of the cooking material evolves the NCA and generate corresponding results.
+Use the colab button above to directly start reproducing the code. You can download the colab and import into your notebook / ipython environment. The advantage of Google Colab is to debug and quickly test the actual framework. We set the following parameters in first cell of the notebook and rest of the cooking material evolves the NCA and generate corresponding results.
 
 ### Experiment 1
 ```python
@@ -235,7 +235,7 @@ Beyond that it produces more results that are related to Phenotypic Diversity (P
 We use Simula eX3 cluster in support of Research Council Norway. We use a100q, dgx2q and hgx2q machines to run our larger experiments. The batch script looks like:
 ```bash
 #!/bin/bash
-#SBATCH -p a100q ## hgx2q, a100q,  dgx2q (old)
+#SBATCH -p a100q ## hgx2q, a100q,  dgx2q (old), genomaxq, xeonmazq
 #SBATCH --output=run.out    ## Output file
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
@@ -353,7 +353,7 @@ To cite this repository:
 ```
 
 
-## Working pipeline
+## Working pipeline Demo
 
 ![IMG_2405](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/00ff2275-04b9-486c-a97a-686e249748d8)
 
