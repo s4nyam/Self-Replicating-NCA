@@ -202,23 +202,31 @@ budget_counter_grid = np.zeros((WIDTH, HEIGHT)) + fixed_value
 
 With this configuration it simulates the proposed NCA framework. And then results a simulation like:
 
+![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/6b092716-56d6-41e3-bf07-53d63d84b378)
+
 
 Beyond that it produces more results that are related to Phenotypic Diversity (PD) and Genotypic Diversity. PD tools are shown below:
 
 * CTFP Plot - Frequency Count Plot
 
+![download](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/326a4bf1-21f2-4f13-b7e8-15985399fe91)
 
 * GEP+GCVP+CLOGV (Phenotypic Diversity and Randomness)
+
+![download](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/9b804ac1-8ffd-4b18-bdd2-bcc90095abce)
 
 
 * GD Unique Color Count Plots (GHC and RWSP)
 
+![download-2](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/a5e3f88c-20f2-4090-947f-3181c9a9d24d)
 
 * RWSP Animation
-
+* 
+![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/0dda3c5a-91fa-4ca9-a3ff-39e3a6467946)
 
 * GHC Animation
 
+![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/fd6e125e-401a-47fc-820f-4efd8276d9f2)
 
 
 
