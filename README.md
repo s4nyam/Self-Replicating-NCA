@@ -324,7 +324,7 @@ We use AWS SageMaker for the easiness to process experimental results. Specifica
 | ml.r5.16xlarge   | 64   | 512 GiB | $4.838         |<30 GB|
 | ml.r5.24xlarge   | 96   | 768 GiB | $7.258         |<100 GB|
 
-This classification of Experiment Size is done to avoid runtime collapse because of the memory outage during the processing of the results for the experiments. We could have produced results on runtime while experimenting using SLURM experiments, however to modularise and balance the workload, we preferred to save the weights for one time, and then process results later if required. This also brought flexibility to improve existing code bases for processing results and add more tools later for our project. We release ```2_sagemaker.ipynb``` to process the experiments. This notebook takes public URLs of the experimentation and process results. We also release public URLs of the experiments that can be processed using this notebook.
+This classification of Experiment Size is done to avoid runtime collapse because of the memory outage during the processing of the results for the experiments. We could have produced results on runtime while experimenting using SLURM experiments, however to modularise and balance the workload, we preferred to save the weights for one time, and then process results later if required. This also brought flexibility to improve existing code bases for processing results and add more tools later for our project. We release ```2_sagemaker.ipynb``` to process the experiments. This notebook takes public URLs of the experimentation and process results. We release these large experiments as public urls below. These publics links are also self-contained in order to check results of those expierments.
 
 ## Experiments
 
