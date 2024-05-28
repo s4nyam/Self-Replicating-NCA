@@ -99,7 +99,6 @@ Please refer to report document for further conceptual and implementation detail
 * [Configuration on Simula eX3](#configuration-on-simula-ex3)
 * [SageMaker instance](#sagemaker-instance)
 * [Cite this](#cite-this)
-* [Sample 900 steps](#sample-900-steps)
 * [Working pipeline](#working-pipeline)
 
 ## Open in Colab
@@ -110,55 +109,58 @@ Please refer to report document for further conceptual and implementation detail
 Use the colab button above to directly start reproducing the code. You can also import [1_colab.ipynb](https://github.com/s4nyam/MasterThesis/blob/main/1_colab.ipynb) into your notebook / ipython environment. The advantage of Google Colab is to debug and quickly test the actual framework. We set the following parameters in first cell of the notebook and rest of the cooking material evolves the NCA and generate corresponding results.
 
 ```python
-import torch
 precision = 1
 torch.set_printoptions(precision=precision)
 WIDTH, HEIGHT = 30,30
 grid_size = (WIDTH, HEIGHT)
 print("Width and Height used are {} and {}".format(WIDTH, HEIGHT))
-INIT_PROBABILITY = 0.02
+INIT_PROBABILITY = 0.1
 min_pixels = max(0, int(WIDTH * HEIGHT * INIT_PROBABILITY))
-NUM_LAYERS = 2  # One hidden and one alpha
-ALPHA = 0.6  # To make other cells active
-INHERTIANCE_PROBABILITY = 0.2  # probability that neighboring cells will inherit by perturbation.
+NUM_LAYERS = 2 # rest hidden and one alpha
+ALPHA = 0.5 # To make other cells active (we dont go with other values below 0.6 to avoid dead cells and premature livelihood)
+INHERTIANCE_PROBABILITY  = 0.2 # probability that neighboring cells will inherit by perturbation.
 parameter_perturbation_probability = 0.2
 print("Numbers of layers used are {}".format(NUM_LAYERS))
 print("1 for alpha layer and rest {} for hidden".format(NUM_LAYERS-1))
 NUM_STEPS = 90
 num_steps = NUM_STEPS
+at_which_step_random_death = 9999999999 # Set this to infinity or high value if you never want to enter catastrophic deletion (random death happens at this generation)
+probability_death = 0.004 # 40 pixels die every generation
 print("Numbers of Time Steps are {}".format(NUM_STEPS))
-DEVICE = torch.device("cuda"  if torch.cuda.is_available() else  "cpu")
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {DEVICE}")
-activation = 'sigmoid'  # ['relu','sigmoid','tanh','leakyrelu']
+activation = 'sigmoid' # ['sigmoid','tanh','noact']
 frequency_dicts = []
-FPS = 2  # Speed of display for animation of NCA and plots
-marker_size = 2  # for plots
+FPS = 10 # Speed of display for animation of NCA and plots
+marker_size = 1 # for plots
 everystep_weights = [] # Stores weigths of the NNs from every time step.
+KMEANS_K = 5
+enable_annotations_on_nca = True
+budget_per_cell = 3
+fixed_value = 0
+budget_counter_grid = np.zeros((WIDTH, HEIGHT)) + fixed_value
 ```
 With this configuration it simulates the proposed NCA framework. And then results a simulation like:
-![sim](https://github.com/s4nyam/MasterThesis/assets/13884479/6854c5f4-dc25-404d-874a-28e97f363df0)
+![sim](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/9217f724-5785-4ede-b026-13f63ac9301b)
 
 
 Beyond that it produces more results that are related to Phenotypic Diversity (PD) and Genotypic Diversity. PD tools are shown below:
-<div align="center">
-<img src="https://dl3.pushbulletusercontent.com/7bI309gDF8A9kVN8bv73gQKMwkRo22io/pdtools.gif" width=100% alt="logo"></img>
-</div>
 
-And GD tools for example 
-* Genotypic Hash Coloring
-<div align="center">
-<img src="https://dl3.pushbulletusercontent.com/GRf9FgtTCiyHPbIvemcVvS9qgDNpAItq/download.gif" width=50% alt="logo"></img>
-</div>
+* CTFP Plot - Frequency Count Plot
+![download](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/f494caca-4dc0-4efa-8cbc-3a2cc86ffdbf)
 
-* Speciation Plot using Clustering Neural Weights Approach:
-<div align="center">
-<img src="https://dl3.pushbulletusercontent.com/0HSjDgttZncmwsen0wyc186r7h3fYBUs/download.png" width=50% alt="logo"></img>
-</div>
+* GEP+GCVP+CLOGV (Phenotypic Diversity and Randomness)
+![download](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/398631f9-b709-4ed3-b56a-0c6b41db30e5)
 
-* Random Weight Selection Plot 
-<div align="center">
-<img src="https://dl3.pushbulletusercontent.com/VIXuT827El7mWMtapTpfZh5Nahqaw5LN/rwsp.gif" width=50% alt="logo"></img>
-</div>
+* GD Unique Color Count Plots (GHC and RWSP)
+![download-1](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/c399e50e-9e1c-492a-8fb3-96f176447423)
+
+* RWSP Animation
+![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/8b4eda32-c45f-42fd-8ca1-208e4929418e)
+
+* GHC Animation
+![download-ezgif com-video-to-gif-converter](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/6b1b91f0-23a3-41e4-bf31-b65ee8ba576c)
+
 
 ## Using SLURM for Larger Experiments
 We use Simula eX3 cluster in support of Research Council Norway. We use a100q, dgx2q and hgx2q machines to run our larger experiments. The batch script looks like:
