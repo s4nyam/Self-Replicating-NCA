@@ -329,14 +329,10 @@ This classification of Experiment Size is done to avoid runtime collapse because
 
 | Experiment | Download Link                                      |
 |------------|-----------------------------------------------------|
-| exp1s      | [Download exp1s.tar](https://nca-exp10.s3.amazonaws.com/exp1s.tar)  |
-| exp2s      | [Download exp2s.tar](https://nca-exp10.s3.amazonaws.com/exp2s.tar)  |
-| exp3s      | [Download exp3s.tar](https://nca-exp10.s3.amazonaws.com/exp3s.tar)  |
-| exp4s      | [Download exp4s.tar](https://nca-exp10.s3.amazonaws.com/exp4s.tar)  |
-| exp5s      | [Download exp5s.tar](https://nca-exp10.s3.amazonaws.com/exp5s.tar)  |
-| exp6s      | [Download exp6s.tar](https://nca-exp10.s3.amazonaws.com/exp6s.tar)  |
-
-Further we release results for all these raw experiments here at this [Drive Link](https://bit.ly/smallruns)
+| 100by100, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 500generations, sigmoid, b4      | [Download exp1.tar](https://drive.google.com/file/d/15KuHi7IDjZpbj01AERP1c1OaGpxXfmVH/view?usp=sharing)  |
+| 100by100, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 1000generations, sigmoid, b4      | [Download exp2.tar](https://drive.google.com/file/d/1XzvSMeqY86RdhHC0L8AFLkmeDNme4n3u/view?usp=sharing)  |
+| 200by200, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 100generations, sigmoid, b4      | [Download exp3.tar](https://drive.google.com/file/d/19BbSy7lBj4c6fg9FZcgnFpKdS66lwgnJ/view?usp=sharing)  |
+| 300by300, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 100generations, sigmoid, b4      | [Download exp4.tar](https://drive.google.com/file/d/154mO_AcRLj9dNwg86gmpJQjx6o25Ekrr/view?usp=sharing)  |
 
 ## Cite this
 To cite this repository:
