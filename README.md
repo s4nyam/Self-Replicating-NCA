@@ -332,15 +332,9 @@ This classification of Experiment Size is done to avoid runtime collapse because
 
 | Experiment | Download Link                                      |
 |------------|-----------------------------------------------------|
-| 100by100, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 500generations, sigmoid, b4      | [Download exp1.tar](https://drive.google.com/file/d/15KuHi7IDjZpbj01AERP1c1OaGpxXfmVH/view?usp=sharing)  |
-| 100by100, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 1000generations, sigmoid, b4      | [Download exp2.tar](https://drive.google.com/file/d/1XzvSMeqY86RdhHC0L8AFLkmeDNme4n3u/view?usp=sharing)  |
-| 200by200, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 100generations, sigmoid, b4      | [Download exp3.tar](https://drive.google.com/file/d/19BbSy7lBj4c6fg9FZcgnFpKdS66lwgnJ/view?usp=sharing)  |
-| 300by300, 0.1init, 2layers, 0.5alpha, 0.2ip, 0.2ppp, 100generations, sigmoid, b4      | [Download exp4.tar](https://drive.google.com/file/d/154mO_AcRLj9dNwg86gmpJQjx6o25Ekrr/view?usp=sharing)  |
-| 5 times 200by200, 0.02init, 2layers, 0.5alpha, 0.1ip, 0.02ppp, 1000generations, tanh, b8      | [Download exp5.tar](https://drive.google.com/file/d/18tZu0OuDtBvgtwoayl8ewscG2gHEABKo/view?usp=sharing)  |
-| 5 times 200by200, 0.08init, 2layers, 0.5alpha, 0.1ip, 0.02ppp, 1000generations, tanh, b8      | [Download exp6.tar](https://drive.google.com/file/d/1ZA02FoQFlQGpl93xrHDZpesw9i7EjKtN/view?usp=sharing)  |
-| 5 times 200by200, 0.02init, 2layers, 0.5alpha, 0.1ip, 0.02ppp, 1000generations, sigmoid, b4      | [Download exp7.tar](https://drive.google.com/file/d/1DO1gaRnv3UJHEdsxkAuOFc4iyDVxHYN2/view?usp=sharing) |
-| 5 times 200by200, 0.02init, 2layers, 0alpha, 0.1ip, 0.02ppp, 1000generations, tanh, b4      | [Download exp8.tar](https://drive.google.com/file/d/1DO1gaRnv3UJHEdsxkAuOFc4iyDVxHYN2/view?usp=sharing) |
-| 5 times 200by200, 0.02init, 2layers, 0.5alpha, 0.1ip, 0.02ppp, 1000generations, sigmoid, b8      | [Download exp9.tar](https://drive.google.com/file/d/1EB7YKuRQ4q9Y4aSheumgjx335qQqs6Ka/view?usp=sharing) |
+| Configuration     | [Download exp1.tar](Drive Link)  |
+| Configuration     | [Download exp2.tar](Drive Link)  |
+
 
 ## Cite this
 To cite this repository:
