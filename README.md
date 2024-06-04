@@ -330,7 +330,55 @@ This classification of Experiment Size is done to avoid runtime collapse because
 
 ## Experiments
 
-Please refer the thesis report Table 4.4 for correct corresponding configuration of these Large Experiments. We outline total of 24 large experiments to download.
+Please refer the thesis report Table 4.4 for correct corresponding configuration of these Large Experiments. We outline total of 24 large experiments to download. You can also check tables below for corresponding configurations.
+
+This table shows the experiments that are tried for long generations handpicked from small runs. Please refer thesis text for more info.
+
+| $exp.$ | $W$ | $H$ | $init$ | $ppp$ | $ip$ | $b$ | $\alpha$ | $ch$ | $gens$ | $act$ | $ttr (h)$ |
+|--------|-----|-----|--------|-------|------|-----|----------|------|--------|-------|-----------|
+| 1      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 42.8     |
+| 2      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 43.9     |
+| 3      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 44.2     |
+| 4      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 40.0     |
+| 5      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 40.9     |
+| 6      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 38.6     |
+| 7      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 43.1     |
+| 8      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 42.3     |
+| 9      | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 39.2     |
+| 10     | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 43.3     |
+| 11     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.7     |
+| 12     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 44.5     |
+| 13     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 38.8     |
+| 14     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 42.4     |
+| 15     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.1     |
+| 16     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 41.7     |
+| 17     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 42.2     |
+| 18     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 39.6     |
+| 19     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.0     |
+| 20     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 44.4     |
+| 21     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 40.5     |
+| 22     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 38.9     |
+| 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     |
+| 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     |
+
+Full forms of corresponding short forms used in other tables
+
+| Short Form | Full Form                                 |
+|------------|--------------------------------------------|
+| $exp$      | Experiment Number                         |
+| $W$        | Width of NCA                              |
+| $H$        | Height of NCA                             |
+| $init$     | Initial seeded agents percentage          |
+| $ppp$      | Parameter Perturbation Probability        |
+| $ip$       | Inheritance Probability                   |
+| $b$        | Budget Life Threshold                     |
+| $\alpha$   | Alpha Value Threshold                     |
+| $ch$       | Channels in Total for NCA                 |
+| $gens$     | Number of Generations for NCA to evolve   |
+| $act$      | Activation on Board (applied to squash)   |
+| $ttr$      | Expected Time to Run                      |
+
+Following are correspodning download links for these finished experiments.
 
 | Experiment | Download Link                                      |
 |------------|-----------------------------------------------------|
