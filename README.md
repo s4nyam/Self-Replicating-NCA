@@ -361,22 +361,22 @@ This table shows the experiments that are tried for long generations handpicked 
 | 6      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 38.6     |[Download exp6.tar](https://archive.org/download/gnca6/6.tar)  |
 | 7      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 43.1     |[Download exp7.tar](https://archive.org/download/gnca7/7.tar)  |
 | 8      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 42.3     |[Download exp8.tar](https://archive.org/download/gnca8/8.tar)  |
-| 9      | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 39.2     ||
-| 10     | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 43.3     ||
-| 11     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.7     ||
-| 12     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 44.5     ||
-| 13     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 38.8     ||
-| 14     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 42.4     ||
-| 15     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.1     ||
-| 16     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 41.7     ||
-| 17     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 42.2     ||
-| 18     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 39.6     ||
-| 19     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.0     ||
-| 20     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 44.4     ||
-| 21     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 40.5     ||
-| 22     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 38.9     ||
-| 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     ||
-| 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     ||
+| 9      | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 39.2     |[Download exp9.tar](https://archive.org/download/gnca9/9.tar)  |
+| 10     | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 43.3     |[Download exp10.tar](https://archive.org/download/gnca10/10.tar)  |
+| 11     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.7     |[Download exp11.tar](https://archive.org/download/gnca11/11.tar)  |
+| 12     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 44.5     |[Download exp12.tar](https://archive.org/download/gnca12/12.tar)  |
+| 13     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 38.8     |[Download exp13.tar](https://archive.org/download/gnca13/13.tar)  |
+| 14     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 42.4     |[Download exp14.tar](https://archive.org/download/gnca14/14.tar)  |
+| 15     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.1     |[Download exp15.tar](https://archive.org/download/gnca15/15.tar)  |
+| 16     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 41.7     |[Download exp16.tar](https://archive.org/download/gnca16/16.tar)  |
+| 17     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 42.2     |[Download exp17.tar](https://archive.org/download/gnca17/17.tar)  |
+| 18     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 39.6     |[Download exp18.tar](https://archive.org/download/gnca18/18.tar)  |
+| 19     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.0     |[Download exp19.tar](https://archive.org/download/gnca19/19.tar)  |
+| 20     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 44.4     |[Download exp20.tar](https://archive.org/download/gnca20/20.tar)  |
+| 21     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 40.5     |[Download exp21.tar](https://archive.org/download/gnca21/21.tar)  |
+| 22     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 38.9     |[Download exp22.tar](https://archive.org/download/gnca22/22.tar)  |
+| 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     |[Download exp23.tar](https://archive.org/download/gnca23/23.tar)  |
+| 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     |[Download exp24.tar](https://archive.org/download/gnca24/24.tar)  |
 
 
 
