@@ -342,8 +342,7 @@ Please refer the thesis report Table 4.4 for correct corresponding configuration
 | 6     | [Download exp6.tar](https://archive.org/download/gnca6/6.tar)  |
 | 7     | [Download exp7.tar](https://archive.org/download/gnca7/7.tar)  |
 | 8     | [Download exp8.tar](https://archive.org/download/gnca8/8.tar)  |
-| 9     | [Download exp9.tar](https://archive.org/download/gnca9/9.tar)  |
-| 10    | [Download exp10.tar](https://archive.org/download/gnca10/10.tar)  |
+
 
 
 
