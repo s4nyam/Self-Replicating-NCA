@@ -351,47 +351,32 @@ Please refer the thesis report Table 4.4 for correct corresponding configuration
 
 This table shows the experiments that are tried for long generations handpicked from small runs. Please refer thesis text for more info.
 
-| $exp.$ | $W$ | $H$ | $init$ | $ppp$ | $ip$ | $b$ | $\alpha$ | $ch$ | $gens$ | $act$ | $ttr (h)$ |
-|--------|-----|-----|--------|-------|------|-----|----------|------|--------|-------|-----------|
-| 1      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 42.8     |
-| 2      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 43.9     |
-| 3      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 44.2     |
-| 4      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 40.0     |
-| 5      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 40.9     |
-| 6      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 38.6     |
-| 7      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 43.1     |
-| 8      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 42.3     |
-| 9      | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 39.2     |
-| 10     | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 43.3     |
-| 11     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.7     |
-| 12     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 44.5     |
-| 13     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 38.8     |
-| 14     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 42.4     |
-| 15     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.1     |
-| 16     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 41.7     |
-| 17     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 42.2     |
-| 18     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 39.6     |
-| 19     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.0     |
-| 20     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 44.4     |
-| 21     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 40.5     |
-| 22     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 38.9     |
-| 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     |
-| 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     |
-
-
-Following are correspodning download links for these finished experiments.
-
-| Experiment | Download Link                                      |
-|------------|-----------------------------------------------------|
-| 1     | [Download exp1.tar](https://archive.org/download/gnca1/1.tar)  |
-| 2     | [Download exp2.tar](https://archive.org/download/gnca2/2.tar)  |
-| 3     | [Download exp3.tar](https://archive.org/download/gnca3/3.tar)  |
-| 4     | [Download exp4.tar](https://archive.org/download/gnca4/4.tar)  |
-| 5     | [Download exp5.tar](https://archive.org/download/gnca5/5.tar)  |
-| 6     | [Download exp6.tar](https://archive.org/download/gnca6/6.tar)  |
-| 7     | [Download exp7.tar](https://archive.org/download/gnca7/7.tar)  |
-| 8     | [Download exp8.tar](https://archive.org/download/gnca8/8.tar)  |
-
+| $exp.$ | $W$ | $H$ | $init$ | $ppp$ | $ip$ | $b$ | $\alpha$ | $ch$ | $gens$ | $act$ | $ttr (h)$ | Download Link |
+|--------|-----|-----|--------|-------|------|-----|----------|------|--------|-------|-----------|----------------|
+| 1      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 42.8     |[Download exp1.tar](https://archive.org/download/gnca1/1.tar)  |
+| 2      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 43.9     |[Download exp2.tar](https://archive.org/download/gnca2/2.tar)  |
+| 3      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 44.2     |[Download exp3.tar](https://archive.org/download/gnca3/3.tar)  |
+| 4      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 40.0     |[Download exp4.tar](https://archive.org/download/gnca4/4.tar)  |
+| 5      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 40.9     |[Download exp5.tar](https://archive.org/download/gnca5/5.tar)  |
+| 6      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 38.6     |[Download exp6.tar](https://archive.org/download/gnca6/6.tar)  |
+| 7      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 43.1     |[Download exp7.tar](https://archive.org/download/gnca7/7.tar)  |
+| 8      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 42.3     |[Download exp8.tar](https://archive.org/download/gnca8/8.tar)  |
+| 9      | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 39.2     ||
+| 10     | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 43.3     ||
+| 11     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.7     ||
+| 12     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 44.5     ||
+| 13     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 38.8     ||
+| 14     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 42.4     ||
+| 15     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.1     ||
+| 16     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 41.7     ||
+| 17     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 42.2     ||
+| 18     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 39.6     ||
+| 19     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.0     ||
+| 20     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 44.4     ||
+| 21     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 40.5     ||
+| 22     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 38.9     ||
+| 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     ||
+| 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     ||
 
 
 
