@@ -330,6 +330,23 @@ This classification of Experiment Size is done to avoid runtime collapse because
 
 ## Experiments
 
+Before we go ahead, Full forms of corresponding short forms used in other tables:
+
+| Short Form | Full Form                                 |
+|------------|--------------------------------------------|
+| $exp$      | Experiment Number                         |
+| $W$        | Width of NCA                              |
+| $H$        | Height of NCA                             |
+| $init$     | Initial seeded agents percentage          |
+| $ppp$      | Parameter Perturbation Probability        |
+| $ip$       | Inheritance Probability                   |
+| $b$        | Budget Life Threshold                     |
+| $\alpha$   | Alpha Value Threshold                     |
+| $ch$       | Channels in Total for NCA                 |
+| $gens$     | Number of Generations for NCA to evolve   |
+| $act$      | Activation on Board (applied to squash)   |
+| $ttr$      | Expected Time to Run                      |
+
 Please refer the thesis report Table 4.4 for correct corresponding configuration of these Large Experiments. We outline total of 24 large experiments to download. You can also check tables below for corresponding configurations.
 
 This table shows the experiments that are tried for long generations handpicked from small runs. Please refer thesis text for more info.
@@ -361,22 +378,6 @@ This table shows the experiments that are tried for long generations handpicked 
 | 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     |
 | 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     |
 
-Full forms of corresponding short forms used in other tables
-
-| Short Form | Full Form                                 |
-|------------|--------------------------------------------|
-| $exp$      | Experiment Number                         |
-| $W$        | Width of NCA                              |
-| $H$        | Height of NCA                             |
-| $init$     | Initial seeded agents percentage          |
-| $ppp$      | Parameter Perturbation Probability        |
-| $ip$       | Inheritance Probability                   |
-| $b$        | Budget Life Threshold                     |
-| $\alpha$   | Alpha Value Threshold                     |
-| $ch$       | Channels in Total for NCA                 |
-| $gens$     | Number of Generations for NCA to evolve   |
-| $act$      | Activation on Board (applied to squash)   |
-| $ttr$      | Expected Time to Run                      |
 
 Following are correspodning download links for these finished experiments.
 
