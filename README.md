@@ -100,6 +100,7 @@ Please refer to report document for further conceptual and implementation detail
 * [SageMaker instance](#sagemaker-instance)
 * [Experiments](#experiments)
 * [Cite this](#cite-this)
+* [End Deliverables](#end-deliverables)
 
 ## Open in Colab
 <a target="_blank" href="https://colab.research.google.com/drive/1HYKttER_0I6HD1y1oDdg_MLG0D21vMxB?usp=sharing">
@@ -392,6 +393,20 @@ To cite this repository:
   year = {2023},
 }
 ```
+
+## End Deliverables
+
+This project involves dealing with large volumes of data. We divide the project and the simulation process into two sub-parts. The first part involves training the system parameters (also called genes or weights parameters of the neural network) and system environment parameters (or grid values). These parameters are optionally exported as pickle (package) files. In the second part, we load these weights parameters separately to perform the PD and GD analysis. This decision was made to balance the load on the computational resources and allow the use of these pickles at any time without running the complete system again.
+
+The final deliverables include the system environment (NCA grid values and weight parameters if required) variables and the corresponding results of PD and GD tools. We release the following deliverables with this project:
+
+1. The running code is available at the [GitHub repository](https://github.com/s4nyam/Self-Replicating-NCA).
+
+2. All `tar` files as part of compressed experimental data for small runs and large runs are available at [Archive.org](https://archive.org/details/@evolutionary_lenia).
+
+3. We also release high-quality resulting animations as a [YouTube playlist](https://www.youtube.com/@growingnca/playlists).
+
+4. A Google Colab Notebook is provided to try small runs on the go in small runtime environments at [bit.ly/neuralCA](https://bit.ly/neuralCA).
 
 
 ## Working pipeline Demo
