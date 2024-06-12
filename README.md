@@ -379,6 +379,7 @@ This table shows the experiments that are tried for long generations handpicked 
 | 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     |[Download exp23.tar](https://archive.org/download/gnca23/23.tar)  |
 | 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     |[Download exp24.tar](https://archive.org/download/gnca24/24.tar)  |
 
+* All small run experiments can be downloaded from [Download all_small_runs.tar](https://archive.org/download/gnca0)
 
 
 ## Cite this
