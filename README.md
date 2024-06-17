@@ -100,6 +100,7 @@ Please refer to report document for further conceptual and implementation detail
 * [SageMaker instance](#sagemaker-instance)
 * [Experiments](#experiments)
 * [Cite this](#cite-this)
+* [End Deliverables](#end-deliverables)
 
 ## Open in Colab
 <a target="_blank" href="https://colab.research.google.com/drive/1HYKttER_0I6HD1y1oDdg_MLG0D21vMxB?usp=sharing">
@@ -330,10 +331,55 @@ This classification of Experiment Size is done to avoid runtime collapse because
 
 ## Experiments
 
-| Experiment | Download Link                                      |
-|------------|-----------------------------------------------------|
-| Configuration     | [Download exp1.tar](Drive Link)  |
-| Configuration     | [Download exp2.tar](Drive Link)  |
+Before we go ahead, Full forms of corresponding short forms used in other tables:
+
+| Short Form | Full Form                                 |
+|------------|--------------------------------------------|
+| $exp$      | Experiment Number                         |
+| $W$        | Width of NCA                              |
+| $H$        | Height of NCA                             |
+| $init$     | Initial seeded agents percentage          |
+| $ppp$      | Parameter Perturbation Probability        |
+| $ip$       | Inheritance Probability                   |
+| $b$        | Budget Life Threshold                     |
+| $\alpha$   | Alpha Value Threshold                     |
+| $ch$       | Channels in Total for NCA                 |
+| $gens$     | Number of Generations for NCA to evolve   |
+| $act$      | Activation on Board (applied to squash)   |
+| $ttr$      | Expected Time to Run                      |
+
+Please refer the thesis report Table 4.4 for correct corresponding configuration of these Large Experiments. We outline total of 24 large experiments to download. You can also check tables below for corresponding configurations.
+
+This table shows the experiments that are tried for long generations handpicked from small runs. Please refer thesis text for more info.
+
+| $exp.$ | $W$ | $H$ | $init$ | $ppp$ | $ip$ | $b$ | $\alpha$ | $ch$ | $gens$ | $act$ | $ttr (h)$ | Download Link |
+|--------|-----|-----|--------|-------|------|-----|----------|------|--------|-------|-----------|----------------|
+| 1      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 42.8     |[Download exp1.tar](https://archive.org/download/gnca1/1.tar)  |
+| 2      | 200 | 200 | 0.02   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 43.9     |[Download exp2.tar](https://archive.org/download/gnca2/2.tar)  |
+| 3      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 44.2     |[Download exp3.tar](https://archive.org/download/gnca3/3.tar)  |
+| 4      | 200 | 200 | 0.02   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 40.0     |[Download exp4.tar](https://archive.org/download/gnca4/4.tar)  |
+| 5      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0.5      | 2    | 1000   | sigmoid | 40.9     |[Download exp5.tar](https://archive.org/download/gnca5/5.tar)  |
+| 6      | 200 | 200 | 0.08   | 0.02  | 0.1  | 4   | 0        | 2    | 1000   | tanh    | 38.6     |[Download exp6.tar](https://archive.org/download/gnca6/6.tar)  |
+| 7      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0.5      | 2    | 1000   | sigmoid | 43.1     |[Download exp7.tar](https://archive.org/download/gnca7/7.tar)  |
+| 8      | 200 | 200 | 0.08   | 0.02  | 0.1  | 8   | 0        | 2    | 1000   | tanh    | 42.3     |[Download exp8.tar](https://archive.org/download/gnca8/8.tar)  |
+| 9      | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 39.2     |[Download exp9.tar](https://archive.org/download/gnca9/9.tar)  |
+| 10     | 200 | 200 | 0.02   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 43.3     |[Download exp10.tar](https://archive.org/download/gnca10/10.tar)  |
+| 11     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.7     |[Download exp11.tar](https://archive.org/download/gnca11/11.tar)  |
+| 12     | 200 | 200 | 0.02   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 44.5     |[Download exp12.tar](https://archive.org/download/gnca12/12.tar)  |
+| 13     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0.5      | 2    | 1000   | sigmoid | 38.8     |[Download exp13.tar](https://archive.org/download/gnca13/13.tar)  |
+| 14     | 200 | 200 | 0.08   | 0.02  | 0.5  | 4   | 0        | 2    | 1000   | tanh    | 42.4     |[Download exp14.tar](https://archive.org/download/gnca14/14.tar)  |
+| 15     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0.5      | 2    | 1000   | sigmoid | 40.1     |[Download exp15.tar](https://archive.org/download/gnca15/15.tar)  |
+| 16     | 200 | 200 | 0.08   | 0.02  | 0.5  | 8   | 0        | 2    | 1000   | tanh    | 41.7     |[Download exp16.tar](https://archive.org/download/gnca16/16.tar)  |
+| 17     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 42.2     |[Download exp17.tar](https://archive.org/download/gnca17/17.tar)  |
+| 18     | 200 | 200 | 0.02   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 39.6     |[Download exp18.tar](https://archive.org/download/gnca18/18.tar)  |
+| 19     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.0     |[Download exp19.tar](https://archive.org/download/gnca19/19.tar)  |
+| 20     | 200 | 200 | 0.08   | 0.02  | 0.1  | ∞   | 0        | 2    | 1000   | tanh    | 44.4     |[Download exp20.tar](https://archive.org/download/gnca20/20.tar)  |
+| 21     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 40.5     |[Download exp21.tar](https://archive.org/download/gnca21/21.tar)  |
+| 22     | 200 | 200 | 0.02   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 38.9     |[Download exp22.tar](https://archive.org/download/gnca22/22.tar)  |
+| 23     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0.5      | 2    | 1000   | sigmoid | 43.8     |[Download exp23.tar](https://archive.org/download/gnca23/23.tar)  |
+| 24     | 200 | 200 | 0.08   | 0.02  | 0.05 | ∞   | 0        | 2    | 1000   | tanh    | 41.1     |[Download exp24.tar](https://archive.org/download/gnca24/24.tar)  |
+
+* All small run experiments can be downloaded from [Download all_small_runs.tar](https://archive.org/download/gnca0)
 
 
 ## Cite this
@@ -348,6 +394,20 @@ To cite this repository:
   year = {2023},
 }
 ```
+
+## End Deliverables
+
+This project involves dealing with large volumes of data. We divide the project and the simulation process into two sub-parts. The first part involves training the system parameters (also called genes or weights parameters of the neural network) and system environment parameters (or grid values). These parameters are optionally exported as pickle (package) files. In the second part, we load these weights parameters separately to perform the PD and GD analysis. This decision was made to balance the load on the computational resources and allow the use of these pickles at any time without running the complete system again.
+
+The final deliverables include the system environment (NCA grid values and weight parameters if required) variables and the corresponding results of PD and GD tools. We release the following deliverables with this project:
+
+1. The running code is available at the [GitHub repository](https://github.com/s4nyam/Self-Replicating-NCA).
+
+2. All `tar` files as part of compressed experimental data for small runs and large runs are available at [Archive.org](https://archive.org/details/@evolutionary_lenia).
+
+3. We also release high-quality resulting animations as a [YouTube playlist](https://www.youtube.com/@growingnca/playlists).
+
+4. A Google Colab Notebook is provided to try small runs on the go in small runtime environments at [bit.ly/neuralCA](https://bit.ly/neuralCA).
 
 
 ## Working pipeline Demo
