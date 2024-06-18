@@ -8,7 +8,7 @@
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a> <a target="_blank" href="https://www.python.org/dev/peps/pep-0008/">
   <img src="https://img.shields.io/badge/code%20style-PEP%208-blueviolet.svg" alt="python style"/>
-</a> <a target="_blank" href="https://nbviewer.org/urls/nca-exp10.s3.amazonaws.com/NonUniform_NCA_v1_1_colab_7Dec.ipynb">
+</a> <a target="_blank" href="https://nbviewer.org/github/s4nyam/Self-Replicating-NCA/blob/main/1_colab.ipynb">
   <img src="https://user-images.githubusercontent.com/2791223/29387450-e5654c72-8294-11e7-95e4-090419520edb.png" alt="python style"/>
 </a> 
 
