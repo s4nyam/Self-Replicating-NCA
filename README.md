@@ -10,6 +10,8 @@
   <img src="https://img.shields.io/badge/code%20style-PEP%208-blueviolet.svg" alt="python style"/>
 </a> <a target="_blank" href="https://nbviewer.org/github/s4nyam/Self-Replicating-NCA/blob/main/1_colab.ipynb">
   <img src="https://user-images.githubusercontent.com/2791223/29387450-e5654c72-8294-11e7-95e4-090419520edb.png" alt="python style"/>
+</a> <a target="_blank" href="https://www.youtube.com/@growingnca/playlists">
+  <img src="https://dl3.pushbulletusercontent.com/L9L86bdz0KKePnQhuujfzsB6D8BlaDJZ/Remove-bg.ai_1718731040750.png" alt="python style"/>
 </a> 
 
 
