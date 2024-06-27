@@ -416,3 +416,8 @@ The final deliverables include the system environment (NCA grid values and weigh
 
 ![IMG_2405](https://github.com/s4nyam/Self-Replicating-NCA/assets/13884479/00ff2275-04b9-486c-a97a-686e249748d8)
 
+
+## Watch Defense (Request video)
+
+https://drive.google.com/file/d/1ny55Lhr6BKdP_QPQn_EB1OuOvr95z0CH/view?usp=sharing
+
