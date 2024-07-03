@@ -411,6 +411,7 @@ The final deliverables include the system environment (NCA grid values and weigh
 
 4. A Google Colab Notebook is provided to try small runs on the go in small runtime environments at [bit.ly/neuralCA](https://bit.ly/neuralCA).
 
+Supervision Slides with Stefano and Felix from HiØ - https://drive.google.com/drive/folders/1zCJUssoPOsrb2HpCngrSQRpX1pa7-5Ug?usp=sharing
 
 ## Working pipeline Demo
 
